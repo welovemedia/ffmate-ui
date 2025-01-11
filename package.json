@@ -1,0 +1,26 @@
+{
+  "name": "ffmate-ui",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@heroicons/vue": "^2.2.0",
+    "@nuxtjs/tailwindcss": "6.12.2",
+    "@pinia/nuxt": "0.9.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "@vueuse/core": "^12.4.0",
+    "@vueuse/nuxt": "12.4.0",
+    "axios": "^1.7.9",
+    "nuxt": "^3.15.1",
+    "pinia": "^2.3.0",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c"
+}
