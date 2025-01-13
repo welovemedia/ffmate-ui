@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task";
+import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task"
 
 interface Props {
   task: Task;
@@ -72,7 +72,7 @@ defineProps<Props>();
             >
               <div class="relative h-4 flex items-center justify-center">
                 <div
-                  class="absolute top-0 bottom-0 left-0 rounded-lg bg-primary-400"
+                  class="absolute top-0 bottom-0 left-0 rounded-lg bg-primary-400 transition-all"
                   :style="`width:${task.progress}%`"
                 ></div>
                 <div class="relative text-primary-900 font-medium text-sm">
