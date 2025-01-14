@@ -206,10 +206,10 @@ const updateSorting = (header: Header) => {
             <slot name="header.label" v-bind="res"></slot>
           </template>
           <template #cell.label="res">
-            <slot name="cell.label" v-bind="res"></slot>
+            <slot name="cell.label" v-bind="{ ...res, hoveredRow }"></slot>
           </template>
           <template #row.after="res">
-            <slot name="row.after" v-bind="res"></slot>
+            <slot name="row.after" v-bind="{ ...res, hoveredRow }"></slot>
           </template>
         </AppTableNextColumn>
       </template>

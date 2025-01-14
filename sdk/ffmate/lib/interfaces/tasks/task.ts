@@ -4,16 +4,38 @@ export interface Task {
 
   batch?: string;
 
+  resolved?: {
+    command: string;
+    inputFile: string;
+    outputFile: string;
+    postProcessing?: {
+      scriptPath?: string;
+      sidecarPath?: string;
+    };
+  };
+
+  command: string;
   inputFile: string;
   outputFile: string;
 
   status: string;
   progress: number;
 
+  error?: string;
+
   priority: number;
 
-  createdAt: string;
-  updatedAt: string;
+  startedAt?: number;
+  finishedAt?: number;
 
-  postProcessing?: { scriptPath: string; sidecarPath: string };
+  createdAt: number;
+  updatedAt: number;
+
+  postProcessing?: {
+    scriptPath?: string;
+    sidecarPath?: string;
+    error?: string;
+    startedAt?: number;
+    finishedAt?: number;
+  };
 }
