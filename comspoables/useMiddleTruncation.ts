@@ -1,4 +1,7 @@
 export const useMiddleTruncation = (input: string, length: number): string => {
+  if (!input) {
+    return ""
+  }
   if (input.length <= length) {
     return input;
   }

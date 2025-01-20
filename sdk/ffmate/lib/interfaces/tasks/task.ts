@@ -4,19 +4,9 @@ export interface Task {
 
   batch?: string;
 
-  resolved?: {
-    command: string;
-    inputFile: string;
-    outputFile: string;
-    postProcessing?: {
-      scriptPath?: string;
-      sidecarPath?: string;
-    };
-  };
-
-  command: string;
-  inputFile: string;
-  outputFile: string;
+  command: RawResolved;
+  inputFile: RawResolved;
+  outputFile: RawResolved;
 
   status: string;
   progress: number;
@@ -31,11 +21,24 @@ export interface Task {
   createdAt: number;
   updatedAt: number;
 
-  postProcessing?: {
-    scriptPath?: string;
-    sidecarPath?: string;
+  preProcessing?: {
+    scriptPath?: RawResolved;
+    sidecarPath?: RawResolved;
     error?: string;
     startedAt?: number;
     finishedAt?: number;
   };
+
+  postProcessing?: {
+    scriptPath?: RawResolved;
+    sidecarPath?: RawResolved;
+    error?: string;
+    startedAt?: number;
+    finishedAt?: number;
+  };
+}
+
+interface RawResolved {
+  raw: string;
+  resolved?: string;
 }

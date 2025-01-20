@@ -51,7 +51,8 @@ defineProps<Props>();
             <span
               :class="{
                 'text-blue-400':
-                  task.status === 'RUNNING' ||
+                  task.status === 'RUNNING' || 
+                  task.status === 'PRE_PROCESSING' ||
                   task.status === 'POST_PROCESSING',
                 'text-green-400': task.status === 'DONE_SUCCESSFUL',
                 'text-yellow-400': task.status === 'DONE_CANCELED',
@@ -86,6 +87,7 @@ defineProps<Props>();
                   :class="{
                     'bg-blue-500':
                       task.status === 'RUNNING' ||
+                      task.status === 'PRE_PROCESSING' ||
                       task.status === 'POST_PROCESSING',
                     'bg-green-400': task.status === 'DONE_SUCCESSFUL',
                     'bg-red-400': task.status === 'DONE_ERROR',
@@ -119,12 +121,12 @@ defineProps<Props>();
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm/6 font-medium text-white">Command</dt>
           <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
-            {{ task.command }}
+            {{ task.command.raw }}
           </dd>
-          <template v-if="task.resolved?.command">
+          <template v-if="task.command.resolved">
             <dt class="text-sm/6 font-medium text-white ml-2">Resolved</dt>
             <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
-              {{ task.resolved.command }}
+              {{ task.command.resolved }}
             </dd>
           </template>
         </div>
@@ -134,10 +136,10 @@ defineProps<Props>();
           <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
             {{ task.inputFile }}
           </dd>
-          <template v-if="task.resolved?.inputFile">
+          <template v-if="task.inputFile.resolved">
             <dt class="text-sm/6 font-medium text-white ml-2">Resolved</dt>
             <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
-              {{ task.resolved.inputFile }}
+              {{ task.inputFile.resolved }}
             </dd>
           </template>
         </div>
@@ -147,19 +149,86 @@ defineProps<Props>();
           <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
             {{ task.outputFile }}
           </dd>
-          <template v-if="task.resolved?.outputFile">
+          <template v-if="task.outputFile.resolved">
             <dt class="text-sm/6 font-medium text-white ml-2">Resolved</dt>
             <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
-              {{ task.resolved.outputFile }}
+              {{ task.outputFile.resolved }}
             </dd>
           </template>
         </div>
 
         <div
+          v-if="task.preProcessing"
+          class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+        >
+          <dt class="text-sm font-medium text-white">PreProcessing</dt>
+          <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
+            <template
+              v-if="
+                task.preProcessing.startedAt && !task.preProcessing.finishedAt
+              "
+            >
+              <dt class="text-sm/6 font-medium text-white ml-2"></dt>
+              <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
+                started
+                {{ useTimeAgo(new Date(task.preProcessing.startedAt)) }}
+              </dd>
+            </template>
+            <template
+              v-if="
+                task.preProcessing.startedAt && task.preProcessing.finishedAt
+              "
+            >
+              <dt class="text-sm/6 font-medium text-white ml-2"></dt>
+              <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
+                finished
+                {{ useTimeAgo(new Date(task.preProcessing.finishedAt)) }} after
+                <span class="font-bold">{{
+                  humanizer(
+                    task.preProcessing.finishedAt -
+                      task.preProcessing.startedAt
+                  )
+                }}</span>
+              </dd>
+            </template>
+          </dd>
+          <template v-if="task.preProcessing.error">
+            <dt class="text-sm/6 font-medium text-white ml-2">Error</dt>
+            <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
+              <span class="text-red-500">{{ task.preProcessing.error }}</span>
+            </dd>
+          </template>
+          <template v-if="task.preProcessing?.scriptPath?.raw">
+            <dt class="text-sm/6 font-medium text-white ml-2">Script path</dt>
+            <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
+              {{ task.preProcessing.scriptPath.raw }}
+            </dd>
+            <template v-if="task.preProcessing?.scriptPath?.resolved">
+              <dt class="text-sm/6 font-medium text-white ml-4">Resolved</dt>
+              <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
+                {{ task.preProcessing.scriptPath.resolved }}
+              </dd>
+            </template>
+          </template>
+          <template v-if="task.preProcessing?.sidecarPath?.raw">
+            <dt class="text-sm/6 font-medium text-white ml-2">Sidecar path</dt>
+            <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
+              {{ task.preProcessing.sidecarPath.raw }}
+            </dd>
+            <template v-if="task.preProcessing?.sidecarPath?.resolved">
+              <dt class="text-sm/6 font-medium text-white ml-4">Resolved</dt>
+              <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
+                {{ task.preProcessing.sidecarPath.resolved }}
+              </dd>
+            </template>
+          </template>
+        </div>
+        
+        <div
           v-if="task.postProcessing"
           class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
         >
-          <dt class="text-sm font-medium text-white">Postprocessing</dt>
+          <dt class="text-sm font-medium text-white">PostProcessing</dt>
           <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
             <template
               v-if="
@@ -196,27 +265,27 @@ defineProps<Props>();
               <span class="text-red-500">{{ task.postProcessing.error }}</span>
             </dd>
           </template>
-          <template v-if="task.postProcessing.scriptPath">
+          <template v-if="task.postProcessing?.scriptPath?.raw">
             <dt class="text-sm/6 font-medium text-white ml-2">Script path</dt>
             <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
-              {{ task.postProcessing.scriptPath }}
+              {{ task.postProcessing.scriptPath.raw }}
             </dd>
-            <template v-if="task.resolved?.postProcessing?.scriptPath">
+            <template v-if="task.postProcessing?.scriptPath?.resolved">
               <dt class="text-sm/6 font-medium text-white ml-4">Resolved</dt>
               <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
-                {{ task.resolved.postProcessing.scriptPath }}
+                {{ task.postProcessing.scriptPath.resolved }}
               </dd>
             </template>
           </template>
-          <template v-if="task.postProcessing.sidecarPath">
+          <template v-if="task.postProcessing?.sidecarPath?.raw">
             <dt class="text-sm/6 font-medium text-white ml-2">Sidecar path</dt>
             <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
-              {{ task.postProcessing.sidecarPath }}
+              {{ task.postProcessing.sidecarPath.raw }}
             </dd>
-            <template v-if="task.resolved?.postProcessing?.sidecarPath">
+            <template v-if="task.postProcessing?.sidecarPath?.resolved">
               <dt class="text-sm/6 font-medium text-white ml-4">Resolved</dt>
               <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
-                {{ task.resolved.postProcessing.sidecarPath }}
+                {{ task.postProcessing.sidecarPath.resolved }}
               </dd>
             </template>
           </template>

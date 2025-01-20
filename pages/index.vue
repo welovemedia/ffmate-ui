@@ -31,12 +31,12 @@ const tasks = computed(() => {
         batch: tasks[i].batch!,
         uuid: tasks[i].batch,
         status: "",
-        command: "",
+        command: { raw: "" },
         priority: 0,
         isBatch: true,
         name: "Batch",
-        inputFile: "",
-        outputFile: "",
+        inputFile: { raw: "" },
+        outputFile: { raw: "" },
         createdAt: tasks[i].createdAt,
         updatedAt: tasks[i].updatedAt,
         progress:
@@ -76,11 +76,11 @@ const tableItems = computed(() => {
         id: "progress",
       },
       {
-        label: useMiddleTruncation(t.inputFile, 32),
+        label: useMiddleTruncation(t.inputFile.raw, 32),
         id: "inputFile",
       },
       {
-        label: useMiddleTruncation(t.outputFile, 32),
+        label: useMiddleTruncation(t.outputFile.raw, 32),
         id: "outputFile",
       },
       { id: "chevron" },
@@ -152,7 +152,9 @@ const tableItems = computed(() => {
         v-if="cell.id === 'status'"
         :class="{
           'text-blue-400':
-            cell.label === 'RUNNING' || cell.label === 'POST_PROCESSING',
+            cell.label === 'RUNNING' ||
+            cell.label === 'PRE_PROCESSING' ||
+            cell.label === 'POST_PROCESSING',
           'text-primary-400': cell.label === 'DONE_SUCCESSFUL',
           'text-red-400': cell.label === 'DONE_ERROR',
           'text-yellow-400': cell.label === 'DONE_CANCELED',
@@ -170,6 +172,7 @@ const tableItems = computed(() => {
             :class="{
               'bg-blue-500':
                 cell.raw.status === 'RUNNING' ||
+                cell.raw.stats === 'PRE_PROCESSING' ||
                 cell.raw.status === 'POST_PROCESSING',
               'bg-green-400': cell.raw.status === 'DONE_SUCCESSFUL',
               'bg-red-400': cell.raw.status === 'DONE_ERROR',
