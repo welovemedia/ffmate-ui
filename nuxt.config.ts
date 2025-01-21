@@ -1,10 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
+  compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', "@vueuse/nuxt"],
+  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@vueuse/nuxt"],
   ssr: false,
   app: {
+    pageTransition: { name: "page", mode: "out-in" },
     baseURL: "/ui/",
     head: {
       charset: "utf-8",
@@ -20,6 +21,6 @@ export default defineNuxtConfig({
     },
   },
   devServer: {
-    port: 3001
-  }
-})
+    port: 3001,
+  },
+});

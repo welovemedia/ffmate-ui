@@ -3,69 +3,30 @@ import { ChevronRightIcon } from "@heroicons/vue/24/solid";
 import { TrashIcon } from "@heroicons/vue/24/solid";
 import { StopIcon } from "@heroicons/vue/24/solid";
 import { useMiddleTruncation } from "~/comspoables/useMiddleTruncation";
-import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task";
+import type { Preset } from "~/sdk/ffmate/lib/interfaces/presets/preset";
 
-const taskStore = useTaskStore();
+const presetStore = usePresetStore();
 const perPage = 25;
 const page = ref(0);
 
 onMounted(() => {
-    taskStore.load(page.value, perPage);
+    presetStore.load(page.value, perPage);
 });
 
 watch(page, () => {
-    taskStore.load(page.value, perPage);
+    presetStore.load(page.value, perPage);
 });
 
 const selectedItems = ref<string[]>([]);
 
-const processBatches = ref<string[]>([]);
+const deletePreset = (preset: Preset) => {};
 
-const deleteTask = (task: Task) => {};
-
-const cancelTask = (task: Task) => {};
-
-const tasks = computed(() => {
-    const tasks = taskStore.tasks;
-    const result = [] as Task[];
-
-    processBatches.value = [];
-
-    for (let i = 0; i < tasks.length; i++) {
-        const batch = tasks[i].batch;
-        if (batch && !processBatches.value.includes(batch)) {
-            result.push({
-                batch: tasks[i].batch!,
-                uuid: tasks[i].batch,
-                status: "",
-                command: { raw: "" },
-                priority: 0,
-                isBatch: true,
-                name: "Batch",
-                inputFile: { raw: "" },
-                outputFile: { raw: "" },
-                createdAt: tasks[i].createdAt,
-                updatedAt: tasks[i].updatedAt,
-                progress:
-                    Math.round(
-                        (tasks
-                            .filter((t) => t.batch === tasks[i].batch)
-                            .reduce((sum, t) => sum + (t.progress || 0), 0) /
-                            tasks.filter((t) => t.batch === tasks[i].batch)
-                                .length) *
-                            100,
-                    ) / 100,
-            } as Task);
-            processBatches.value.push(batch);
-        }
-        result.push(tasks[i]);
-    }
-
-    return result;
+const presets = computed(() => {
+    return presetStore.presets;
 });
 
 const tableItems = computed(() => {
-    return tasks.value.map((t: Task) => {
+    return presets.value.map((t: Preset) => {
         const cells = [
             {
                 label: t.name,
@@ -76,21 +37,15 @@ const tableItems = computed(() => {
                 id: "priority",
             },
             {
-                label: t.status,
-                id: "status",
+                label: t.command,
+                id: "command",
             },
             {
-                label: t.progress + "%",
-                id: "progress",
+                label: useMiddleTruncation(t.outputFile ?? "", 32),
+                id: "outFile",
             },
-            {
-                label: useMiddleTruncation(t.inputFile.raw, 32),
-                id: "inputFile",
-            },
-            {
-                label: useMiddleTruncation(t.outputFile.raw, 32),
-                id: "outputFile",
-            },
+            { label: t.preProcessing ? "true" : "false" },
+            { label: t.postProcessing ? "true" : "false" },
             { id: "chevron" },
         ];
 
@@ -108,15 +63,14 @@ const tableItems = computed(() => {
         :headers="[
             { label: 'Name' },
             { label: 'Priority' },
-            { label: 'Status' },
-            { label: 'Progress' },
-            { label: 'Input', columnClass: 'w-64' },
-            { label: 'Output', columnClass: 'w-64' },
+            { label: 'Command' },
+            { label: 'Outfile' },
+            { label: 'PreProcessing', columnClass: 'w-64' },
+            { label: 'PostProcessing', columnClass: 'w-64' },
             { label: 'pagination', columnClass: 'w-16' },
         ]"
         :rows="tableItems"
         :selectAble="['click', 'single']"
-        :rowBlacklist="processBatches"
         @update:select="selectedItems = $event"
     >
         <template #header.label="{ header }">
@@ -124,7 +78,7 @@ const tableItems = computed(() => {
                 v-if="header.label === 'pagination'"
                 :page="page"
                 :perPage="perPage"
-                :total="taskStore.total"
+                :total="presetStore.total"
                 @next="page++"
                 @previous="page--"
             />
@@ -217,12 +171,7 @@ const tableItems = computed(() => {
                     <TrashIcon
                         v-if="cell.raw.status.indexOf('DONE_') !== -1"
                         class="size-3 hover:text-gray-300 text-gray-400"
-                        @click="deleteTask(cell.raw)"
-                    />
-                    <StopIcon
-                        v-if="cell.raw.status === 'QUEUED'"
-                        class="size-4 hover:text-gray-300 text-gray-400"
-                        @click="cancelTask(cell.raw)"
+                        @click="deletePreset(cell.raw)"
                     />
                 </template>
                 <ChevronRightIcon
@@ -241,7 +190,7 @@ const tableItems = computed(() => {
                 <div
                     class="px-12 border border-gray-900 bg-gray-800/50 -mt-2 rounded-b-lg w-[99%] mx-auto"
                 >
-                    <TaskDetails :task="row.raw" />
+                    <PresetDetails :preset="row.raw" />
                 </div>
             </div>
         </template>

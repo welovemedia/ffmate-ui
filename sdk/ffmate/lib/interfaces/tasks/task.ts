@@ -21,21 +21,17 @@ export interface Task {
   createdAt: number;
   updatedAt: number;
 
-  preProcessing?: {
-    scriptPath?: RawResolved;
-    sidecarPath?: RawResolved;
-    error?: string;
-    startedAt?: number;
-    finishedAt?: number;
-  };
+  preProcessing?: PrePostProcessing;
 
-  postProcessing?: {
-    scriptPath?: RawResolved;
-    sidecarPath?: RawResolved;
-    error?: string;
-    startedAt?: number;
-    finishedAt?: number;
-  };
+  postProcessing?: PrePostProcessing;
+}
+
+interface PrePostProcessing {
+  scriptPath?: RawResolved;
+  sidecarPath?: RawResolved;
+  error?: string;
+  startedAt?: number;
+  finishedAt?: number;
 }
 
 interface RawResolved {

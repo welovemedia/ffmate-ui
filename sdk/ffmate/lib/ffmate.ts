@@ -4,6 +4,7 @@ import wrapException from "./helper/ErrorHelper";
 import { disableCacheHeaders } from "./interfaces/axios";
 import TaskService from "./services/task";
 import WebsocketService from "./services/websocket";
+import PresetService from "./services/preset";
 
 const VERSION = "0.0.1";
 const DEFAULT_OPTIONS: Options = {};
@@ -11,8 +12,9 @@ const DEFAULT_OPTIONS: Options = {};
 export default class SevWtf {
   private options: Options;
   private axios: AxiosInstance;
-  public Tasks: TaskService
-  public Websocket: WebsocketService
+  public Tasks: TaskService;
+  public Preset: PresetService;
+  public Websocket: WebsocketService;
 
   constructor(options?: Options) {
     this.options = { ...DEFAULT_OPTIONS, ...options };
@@ -26,10 +28,11 @@ export default class SevWtf {
       (response) => response,
       (error) => {
         return Promise.reject(wrapException(error));
-      }
+      },
     );
 
     this.Tasks = new TaskService(this.options, this.axios);
+    this.Preset = new PresetService(this.options, this.axios);
     this.Websocket = new WebsocketService(this.options, this.axios);
   }
 

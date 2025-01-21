@@ -1,6 +1,7 @@
 import type { AxiosInstance } from "axios";
 import Base, { type Options } from "../Base";
 import type { Task } from "../interfaces/tasks/task";
+import type { Preset } from "../interfaces/presets/preset";
 
 export type CallbackEvent = {
   id?: string;
@@ -14,7 +15,7 @@ export type CallbackEvent = {
 
 export interface WebsocketMessage {
   subject: string;
-  payload: Task;
+  payload: Task | Preset;
 }
 
 export default class WebsocketService extends Base {
@@ -36,7 +37,7 @@ export default class WebsocketService extends Base {
     if (!this.connected && this.conn?.readyState !== WebSocket.OPEN) {
       this.connected = true;
       this.conn = new WebSocket(
-        this.getEndpoint("").replace("http", "ws").replace("https", "wss")
+        this.getEndpoint("").replace("http", "ws").replace("https", "wss"),
       );
       this.conn.onmessage = (event) => {
         const data: WebsocketMessage = JSON.parse(event.data);
