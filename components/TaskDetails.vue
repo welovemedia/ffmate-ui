@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import humanizer from "humanize-duration";
+import { FolderIcon } from "@heroicons/vue/24/outline";
+import { InboxIcon } from "@heroicons/vue/24/outline";
 import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task";
 
 interface Props {
@@ -12,7 +14,14 @@ defineProps<Props>();
 <template>
     <div class="pt-12">
         <div class="px-4 sm:px-0">
-            <h3 class="text-base/7 font-semibold text-white">
+            <h3
+                class="text-base/7 font-semibold text-white flex flex-row gap-x-2 items-center"
+            >
+                <FolderIcon
+                    v-if="task.source === 'watchfolder'"
+                    class="size-3"
+                />
+                <InboxIcon v-else class="size-3" />
                 {{ task.name }}
             </h3>
             <p class="max-w-2xl text-sm/6 text-gray-400">

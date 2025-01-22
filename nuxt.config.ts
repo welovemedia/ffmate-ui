@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@vueuse/nuxt"],
   ssr: false,
+  css: ["~/assets/css/style.css"],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
     baseURL: "/ui/",
@@ -18,6 +19,9 @@ export default defineNuxtConfig({
         },
       ],
       title: "ffmate",
+      htmlAttrs: {
+        class: "overflow-y-scroll",
+      },
     },
   },
   devServer: {

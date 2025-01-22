@@ -15,6 +15,8 @@ export interface Task {
 
   priority: number;
 
+  source: "watchfolder" | "api";
+
   startedAt?: number;
   finishedAt?: number;
 

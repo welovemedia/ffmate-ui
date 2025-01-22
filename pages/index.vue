@@ -2,6 +2,8 @@
 import { ChevronRightIcon } from "@heroicons/vue/24/solid";
 import { TrashIcon } from "@heroicons/vue/24/solid";
 import { StopIcon } from "@heroicons/vue/24/solid";
+import { FolderIcon } from "@heroicons/vue/24/outline";
+import { InboxIcon } from "@heroicons/vue/24/outline";
 import { useMiddleTruncation } from "~/comspoables/useMiddleTruncation";
 import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task";
 
@@ -42,6 +44,7 @@ const tasks = computed(() => {
                 priority: 0,
                 isBatch: true,
                 name: "Batch",
+                source: "api",
                 inputFile: { raw: "" },
                 outputFile: { raw: "" },
                 createdAt: tasks[i].createdAt,
@@ -136,14 +139,24 @@ const tableItems = computed(() => {
                 :class="{ 'pl-4': !cell.raw.isBatch && cell.raw.batch }"
             >
                 <div class="flex flex-col">
-                    <span :class="{ 'italic text-gray-400': !cell.label }">{{
-                        (cell.label as string)?.length
-                            ? useMiddleTruncation(
-                                  (cell.label as string) ?? "",
-                                  64,
-                              )
-                            : "no name found"
-                    }}</span>
+                    <div class="flex flex-row space-x-2 items-center">
+                        <FolderIcon
+                            v-if="cell.raw.source === 'watchfolder'"
+                            class="size-3"
+                        />
+                        <InboxIcon v-else class="size-3" />
+                        <span
+                            :class="{ 'italic text-gray-400': !cell.label }"
+                            >{{
+                                (cell.label as string)?.length
+                                    ? useMiddleTruncation(
+                                          (cell.label as string) ?? "",
+                                          64,
+                                      )
+                                    : "no name found"
+                            }}</span
+                        >
+                    </div>
                     <span class="text-xs text-gray-400"
                         >{{
                             cell.raw.finishedAt
