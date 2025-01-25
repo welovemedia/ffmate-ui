@@ -15,6 +15,12 @@ const menu = [
         } as RouteLocationNamedRaw,
     },
     {
+        label: "Watchfolders",
+        to: {
+            name: "watchfolders",
+        } as RouteLocationNamedRaw,
+    },
+    {
         label: "Presets",
         to: {
             name: "presets",

@@ -5,6 +5,7 @@ import { disableCacheHeaders } from "./interfaces/axios";
 import TaskService from "./services/task";
 import WebsocketService from "./services/websocket";
 import PresetService from "./services/preset";
+import WatchfolderService from "./services/watchfolder";
 
 const VERSION = "0.0.1";
 const DEFAULT_OPTIONS: Options = {};
@@ -13,6 +14,7 @@ export default class SevWtf {
   private options: Options;
   private axios: AxiosInstance;
   public Tasks: TaskService;
+  public Watchfolder: WatchfolderService;
   public Preset: PresetService;
   public Websocket: WebsocketService;
 
@@ -28,10 +30,11 @@ export default class SevWtf {
       (response) => response,
       (error) => {
         return Promise.reject(wrapException(error));
-      },
+      }
     );
 
     this.Tasks = new TaskService(this.options, this.axios);
+    this.Watchfolder = new WatchfolderService(this.options, this.axios);
     this.Preset = new PresetService(this.options, this.axios);
     this.Websocket = new WebsocketService(this.options, this.axios);
   }

@@ -2,16 +2,11 @@
 import { ChevronRightIcon } from "@heroicons/vue/24/solid";
 import { TrashIcon } from "@heroicons/vue/24/solid";
 import { StopIcon } from "@heroicons/vue/24/solid";
-import { useMiddleTruncation } from "~/comspoables/useMiddleTruncation";
 import type { Preset } from "~/sdk/ffmate/lib/interfaces/presets/preset";
 
 const presetStore = usePresetStore();
-const perPage = 25;
+const { perPage } = useConfig();
 const page = ref(0);
-
-onMounted(() => {
-    presetStore.load(page.value, perPage);
-});
 
 watch(page, () => {
     presetStore.load(page.value, perPage);
