@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Cell } from "./AppTableNext.vue"
+import type { Cell } from "./AppTableNext.vue";
 
 export type AppTableNextColumnCellActionCallback = (item: Cell) => void;
 
@@ -25,10 +25,5 @@ defineProps<Props>();
       'opacity-0 group-hover:opacity-100': !visible,
     }"
     :aria-label="action.ariaLabel"
-  >
-    <ficon
-      :icon="action.icon"
-      class="cursor-pointer text-xs text-gray-400 group-hover/icons:text-gray-300"
-    />
-  </button>
+  ></button>
 </template>

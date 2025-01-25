@@ -30,6 +30,27 @@ defineProps<Props>();
         </div>
 
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm/6 font-medium text-white">Status</dt>
+          <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
+            <span
+              :class="{
+                'text-red-500': watchfolder.error,
+                'text-green-500': !watchfolder.error,
+              }"
+            >
+              {{ watchfolder.error ?? "OK" }}
+            </span>
+          </dd>
+        </div>
+
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm/6 font-medium text-white">Last check</dt>
+          <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
+            {{ useTimeAgo(new Date(watchfolder.lastCheck)) }}
+          </dd>
+        </div>
+
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm/6 font-medium text-white">Preset</dt>
           <dd class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0">
             {{
@@ -60,7 +81,10 @@ defineProps<Props>();
           </dd>
         </div>
         <div
-          v-if="watchfolder.filter?.extensions"
+          v-if="
+            watchfolder.filter?.extensions?.include?.length ||
+            watchfolder.filter?.extensions?.exclude?.length
+          "
           class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
         >
           <dt class="text-sm/6 font-medium text-white">Filter</dt>

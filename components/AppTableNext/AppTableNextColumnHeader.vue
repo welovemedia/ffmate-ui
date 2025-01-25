@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ChevronDownIcon } from "@heroicons/vue/24/solid";
 import type { Header, Sorting } from "./AppTableNext.vue"
 
 interface Props {
@@ -20,13 +21,12 @@ const emit = defineEmits(["update:sorting"]);
         <span class="line-clamp-1 select-none" @click="emit('update:sorting')"
           >{{ header.label }}
         </span>
-        <ficon
+        <ChevronDownIcon
           v-if="
             sorting?.fields?.length && sorting?.fields?.[0] === header.sortField
           "
-          icon="fa-solid fa-chevron-up"
-          class="size-2"
-          :class="{ 'rotate-180': sorting?.direction === 'DESC' }"
+          class="size-2 rotate-180"
+          :class="{ '!rotate-0': sorting?.direction === 'DESC' }"
         />
       </div>
     </slot>

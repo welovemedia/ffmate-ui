@@ -37,6 +37,10 @@ const tableItems = computed(() => {
         id: "name",
       },
       {
+        label: "",
+        id: "status",
+      },
+      {
         label: t.interval + ` (checks: ${t.growthChecks})`,
         id: "interval",
       },
@@ -53,10 +57,10 @@ const tableItems = computed(() => {
         id: "preset",
       },
       {
-        label: "yo",
+        label: useTimeAgo(new Date(t.lastCheck)).value,
         id: "lastCheck",
       },
-      { id: "chevron" },
+      { label: "", id: "chevron" },
     ];
 
     return {
@@ -72,6 +76,7 @@ const tableItems = computed(() => {
   <AppTableNext
     :headers="[
       { label: 'Name' },
+      { label: 'Status' },
       { label: 'Interval (sec)' },
       { label: 'Path' },
       { label: 'Preset' },
@@ -94,6 +99,15 @@ const tableItems = computed(() => {
       />
     </template>
     <template #cell.label="{ cell, hoveredRow }">
+      <span
+        v-if="cell.id === 'status'"
+        :class="{
+          'text-red-500': cell.raw.error,
+          'text-green-500': !cell.raw.error,
+        }"
+      >
+        {{ cell.raw.error ?? 'OK' }}
+      </span>
       <div
         v-if="cell.id === 'name'"
         class="flex flex-col items-center"

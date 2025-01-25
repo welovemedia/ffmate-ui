@@ -19,6 +19,8 @@ export interface Watchfolder {
   updatedAt: number;
   lastCheck: number;
 
+  error?: string;
+
   filter?: WatchfolderFilter;
 
   preset: string;
