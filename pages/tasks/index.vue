@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ChevronRightIcon } from "@heroicons/vue/24/solid";
+import { ChevronRightIcon, Cog6ToothIcon } from "@heroicons/vue/24/solid";
 import { TrashIcon } from "@heroicons/vue/24/solid";
 import { StopIcon } from "@heroicons/vue/24/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
@@ -15,6 +15,12 @@ watch(page, () => {
 });
 
 const selectedItems = ref<string[]>([]);
+
+const showFilter = ref(false);
+const activeFilter = ref<string | undefined>(undefined);
+watch(activeFilter, () => {
+  taskStore.load(page.value, perPage, activeFilter.value);
+});
 
 const processBatches = ref<string[]>([]);
 
@@ -101,7 +107,27 @@ const tableItems = computed(() => {
 </script>
 
 <template>
+  <EmptyState v-if="taskStore.loaded && !tableItems.length">
+    <template #title>
+      <span class="text-3xl">No tasks found</span>
+    </template>
+    <template #message>
+      <span class="text-xl mt-8"
+        >Create a task
+        <template v-if="activeFilter"
+          >or
+          <span
+            class="text-primary-400 hover:text-primary-300 cursor-pointer"
+            @click="activeFilter = undefined"
+            >reset</span
+          >
+          the filter</template
+        ></span
+      >
+    </template>
+  </EmptyState>
   <AppTableNext
+    v-else-if="taskStore.loaded && tableItems.length"
     :headers="[
       { label: 'Name' },
       { label: 'Priority' },
@@ -117,6 +143,39 @@ const tableItems = computed(() => {
     @update:select="selectedItems = $event"
   >
     <template #header.label="{ header }">
+      <div
+        v-if="header.label === 'Status' && !showFilter"
+        class="flex flex-row space-x-2 items-center"
+      >
+        <span>Status</span>
+        <Cog6ToothIcon
+          class="size-3 cursor-pointer text-gray-400 hover:text-gray-300"
+          @click="showFilter = true"
+        />
+      </div>
+      <div
+        v-if="header.label === 'Status' && showFilter"
+        class="flex flex-row space-x-2 items-center"
+      >
+        <select
+          class="h-6 bg-black py-0 my-0 text-xs rounded-lg"
+          @change="(event: any) => {
+            activeFilter = event.target.value === 'ALL' ? undefined : event.target.value
+            showFilter = false
+          }"
+        >
+          <option :selected="!activeFilter">ALL</option>
+          <option :selected="activeFilter === 'QUEUED'">QUEUED</option>
+          <option :selected="activeFilter === 'RUNNING'">RUNNING</option>
+          <option :selected="activeFilter === 'DONE_SUCCESSFUL'">
+            DONE_SUCCESSFUL
+          </option>
+          <option :selected="activeFilter === 'DONE_ERROR'">DONE_ERROR</option>
+          <option :selected="activeFilter === 'DONE_CANCELED'">
+            DONE_CANCELED
+          </option>
+        </select>
+      </div>
       <Pagination
         v-if="header.label === 'pagination'"
         :page="page"

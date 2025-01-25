@@ -8,11 +8,17 @@ export default class TaskService extends Base {
     super(options, axios);
   }
 
-  public getTasks = async (page?: number, perPage?: number) => {
+  public getTasks = async (
+    page?: number,
+    perPage?: number,
+    status?: string
+  ) => {
     page = page ?? 0;
     perPage = perPage ?? 100;
     const res = await this.axios.get<Task[]>(
-      this.getEndpoint(`?page=${page}&perPage=${perPage}`),
+      this.getEndpoint(
+        `?page=${page}&perPage=${perPage}${status ? `&status=${status}` : ""}`
+      )
     );
 
     const total = parseInt(res.headers["x-total"]);

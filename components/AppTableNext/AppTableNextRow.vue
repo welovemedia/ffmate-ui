@@ -96,6 +96,7 @@ const isIndeterminate = computed(() => {
 
   <!-- item rows -->
   <tr
+    v-if="row.cells.length"
     @mouseenter="emit('update:hoveredRow', rowIndex)"
     @mouseleave="emit('update:hoveredRow', -1)"
   >

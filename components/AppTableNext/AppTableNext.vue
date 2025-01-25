@@ -151,7 +151,7 @@ const updateSorting = (header: Header) => {
       class="flex w-full flex-col text-sm"
     >
       <table border="0" cellspacing="0" cellpadding="0" class="appearance-none">
-        <template v-for="(row, r) in rows">
+        <template v-for="(row, r) in rows" :key="r">
           <AppTableNextRow
             :row="row"
             :rowIndex="r"
