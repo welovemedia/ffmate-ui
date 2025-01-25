@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ChevronRightIcon } from "@heroicons/vue/24/solid";
 import type { Header, Sorting } from "./AppTableNext.vue";
 
 interface Props {
@@ -22,7 +23,7 @@ const emit = defineEmits(["update:sorting"]);
                     @click="emit('update:sorting')"
                     >{{ header.label }}
                 </span>
-                <ficon
+                <ChevronRightIcon
                     v-if="
                         sorting?.fields?.length &&
                         sorting?.fields?.[0] === header.sortField

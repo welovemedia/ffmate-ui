@@ -173,6 +173,9 @@ const updateSorting = (header: Header) => {
             <template #cell.label="res">
               <slot name="cell.label" v-bind="res"></slot>
             </template>
+            <template #row.before="res">
+              <slot name="row.before" v-bind="{ ...res, hoveredRow }"></slot>
+            </template>
             <template #row.after="res">
               <slot name="row.after" v-bind="res"></slot>
             </template>
@@ -207,6 +210,9 @@ const updateSorting = (header: Header) => {
           </template>
           <template #cell.label="res">
             <slot name="cell.label" v-bind="{ ...res, hoveredRow }"></slot>
+          </template>
+          <template #row.before="res">
+            <slot name="row.before" v-bind="{ ...res, hoveredRow }"></slot>
           </template>
           <template #row.after="res">
             <slot name="row.after" v-bind="{ ...res, hoveredRow }"></slot>

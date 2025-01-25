@@ -1,7 +1,10 @@
 import { type AxiosInstance } from "axios";
 import Base, { type Options } from "../../Base";
 import type { PaginatedResponse } from "../../interfaces/global/paginatedResponse";
-import type { Watchfolder } from "../../interfaces/watchfolders/watchfolder";
+import type {
+  NewWatchfolder,
+  Watchfolder,
+} from "../../interfaces/watchfolders/watchfolder";
 
 export default class WatchfolderService extends Base {
   constructor(options: Options, axios: AxiosInstance) {
@@ -19,6 +22,17 @@ export default class WatchfolderService extends Base {
     return { items: res.data, total: total } as PaginatedResponse<
       Watchfolder[]
     >;
+  };
+
+  public delete = async (uuid: string) => {
+    await this.axios.delete(this.getEndpoint(`/${uuid}`));
+  };
+
+  public create = async (watchfolder: NewWatchfolder) => {
+    return await this.axios.post<Watchfolder>(
+      this.getEndpoint(""),
+      watchfolder
+    );
   };
 
   protected getEndpoint(endpoint: string): string {

@@ -7,7 +7,9 @@ const originalStore = defineStore("watchfolder", {
     return { watchfolders: [], total: 0 };
   },
   actions: {
-    async delete() {},
+    async delete(uuid: string) {
+      await useFFMate().Watchfolder.delete(uuid)
+    },
     async load(page: number, perPage: number) {
       page = page ?? 0;
       perPage = perPage ?? 100;

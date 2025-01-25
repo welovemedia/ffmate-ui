@@ -9,9 +9,6 @@ export type CallbackEvent = {
   onAdd?: (data: WebsocketMessage) => void;
   onUpdate?: (data: WebsocketMessage) => void;
   onDelete?: (data: WebsocketMessage) => void;
-  onExecute?: (data: WebsocketMessage) => void;
-  onCancel?: (data: WebsocketMessage) => void;
-  onError?: (error: Error) => void;
 };
 
 export interface WebsocketMessage {
@@ -24,7 +21,7 @@ export default class WebsocketService extends Base {
   private callbacks: CallbackEvent[] = [];
   private reconnectTimeout: number | null = null;
   private reconnectDelay = 1000; // 1 second delay for reconnection
-  private debug = useDebug('websocket');
+  private debug = useDebug("websocket");
 
   constructor(options: Options, axios: AxiosInstance) {
     super(options, axios);

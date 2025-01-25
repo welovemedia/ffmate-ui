@@ -1,55 +1,53 @@
 <script lang="ts" setup>
-import { ChevronRightIcon } from "@heroicons/vue/24/solid";
+import { ChevronRightIcon, PlusIcon } from "@heroicons/vue/24/solid";
 import { TrashIcon } from "@heroicons/vue/24/solid";
-import { StopIcon } from "@heroicons/vue/24/solid";
-import type { WatchArrayCallback } from "@vueuse/core";
 import type { Preset } from "~/sdk/ffmate/lib/interfaces/presets/preset";
-import type { Watchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolders/watchfolder";
 
-const watchfolderStore = useWatchfolderStore();
 const presetStore = usePresetStore();
 const { perPage } = useConfig();
 const page = ref(0);
 
 watch(page, () => {
-  watchfolderStore.load(page.value, perPage);
+  presetStore.load(page.value, perPage);
 });
 
 const selectedItems = ref<string[]>([]);
 
-const deletePreset = (preset: Preset) => {};
+const deletePreset = (preset: Preset) => {
+  useConfirm({
+    title: "Delete Preset",
+    message: `Do you really want to delete the preset "${preset.name}"?`,
+    successCallback: async () => {
+      await presetStore.delete(preset.uuid);
+    },
+  });
+};
 
 const presets = computed(() => {
-  return watchfolderStore.watchfolders;
+  return presetStore.presets;
 });
 
 const tableItems = computed(() => {
-  return presets.value.map((t: Watchfolder) => {
+  return presets.value.map((t: Preset) => {
     const cells = [
       {
         label: t.name,
         id: "name",
       },
       {
-        label: t.interval + ` (checks: ${t.growthChecks})`,
-        id: "interval",
+        label: t.priority,
+        id: "priority",
       },
       {
-        label: useMiddleTruncation(t.path ?? "", 32),
-        id: "path",
+        label: t.command,
+        id: "command",
       },
       {
-        label: presetStore.presets.find((p) => p.uuid === t.preset)?.name,
-        id: "preset",
+        label: useMiddleTruncation(t.outputFile ?? "", 32),
+        id: "outFile",
       },
-      {
-        label: t.filter?.extensions ? "Yes" : "No",
-        id: "preset",
-      },
-      {
-        label: "yo",
-        id: "lastCheck",
-      },
+      { label: t.preProcessing ? "Yes" : "No" },
+      { label: t.postProcessing ? "Yes" : "No" },
       { id: "chevron" },
     ];
 
@@ -66,11 +64,11 @@ const tableItems = computed(() => {
   <AppTableNext
     :headers="[
       { label: 'Name' },
-      { label: 'Interval (sec)' },
-      { label: 'Path' },
-      { label: 'Preset' },
-      { label: 'Filter' },
-      { label: 'LastCheck' },
+      { label: 'Priority' },
+      { label: 'Command' },
+      { label: 'Outfile' },
+      { label: 'PreProcessing', columnClass: 'w-64' },
+      { label: 'PostProcessing', columnClass: 'w-64' },
       { label: 'pagination', columnClass: 'w-16' },
     ]"
     :rows="tableItems"
@@ -82,7 +80,7 @@ const tableItems = computed(() => {
         v-if="header.label === 'pagination'"
         :page="page"
         :perPage="perPage"
-        :total="watchfolderStore.total"
+        :total="presetStore.total"
         @next="page++"
         @previous="page--"
       />
@@ -120,10 +118,58 @@ const tableItems = computed(() => {
         </div>
       </div>
 
+      <span v-if="cell.id === 'priority'"
+        ><span v-if="!cell.raw.isBatch">{{ cell.label }}</span></span
+      >
+
+      <span
+        v-if="cell.id === 'status'"
+        :class="{
+          'text-blue-400':
+            cell.label === 'RUNNING' ||
+            cell.label === 'PRE_PROCESSING' ||
+            cell.label === 'POST_PROCESSING',
+          'text-primary-400': cell.label === 'DONE_SUCCESSFUL',
+          'text-red-400': cell.label === 'DONE_ERROR',
+          'text-yellow-400': cell.label === 'DONE_CANCELED',
+        }"
+        >{{ cell.label }}</span
+      >
+
+      <div
+        v-if="cell.id === 'progress'"
+        class="bg-white rounded-xl shadow-sm overflow-hidden p-1 w-40"
+      >
+        <div class="relative h-4 flex items-center justify-center">
+          <div
+            class="absolute top-0 bottom-0 left-0 rounded-lg transition-all duration-300 ease-in-out"
+            :class="{
+              'bg-blue-500':
+                cell.raw.status === 'RUNNING' ||
+                cell.raw.stats === 'PRE_PROCESSING' ||
+                cell.raw.status === 'POST_PROCESSING',
+              'bg-green-400': cell.raw.status === 'DONE_SUCCESSFUL',
+              'bg-red-400': cell.raw.status === 'DONE_ERROR',
+              'bg-yellow-400': cell.raw.status === 'DONE_CANCELED',
+            }"
+            :style="`width:${cell.raw.progress}%`"
+          ></div>
+          <div class="relative text-primary-900 font-medium text-sm">
+            {{ cell.label }}
+          </div>
+        </div>
+      </div>
+
       <div
         v-if="cell.id === 'chevron' && !cell.raw.isBatch"
         class="flex flex-row space-x-2 justify-end w-full"
       >
+        <template v-if="cell.rowIndex === hoveredRow">
+          <TrashIcon
+            class="size-3 hover:text-gray-300 text-gray-400 z-50"
+            @click.stop="deletePreset(cell.raw)"
+          />
+        </template>
         <ChevronRightIcon
           class="size-3 transition-all"
           :class="{
@@ -140,7 +186,7 @@ const tableItems = computed(() => {
         <div
           class="px-12 border border-gray-900 bg-gray-800/50 -mt-2 rounded-b-lg w-[99%] mx-auto"
         >
-          <WatchfolderDetails :watchfolder="row.raw" />
+          <PresetDetails :preset="row.raw" />
         </div>
       </div>
     </template>

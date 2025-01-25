@@ -24,6 +24,19 @@ export interface Watchfolder {
   preset: string;
 }
 
+export interface NewWatchfolder {
+  name: string;
+  description?: string;
+
+  path: string;
+  interval: number;
+  growthChecks: number;
+
+  filter?: WatchfolderFilter;
+
+  preset: string;
+}
+
 export interface WatchfolderFilter {
   extensions?: WatchfolderFilterExtension;
 }

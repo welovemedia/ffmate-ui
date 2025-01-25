@@ -7,7 +7,10 @@ const originalStore = defineStore("preset", {
     return { presets: [], total: 0 };
   },
   actions: {
-    async delete() {},
+    async delete(uuid: string) {
+      const { $ffmate } = useNuxtApp()
+      await $ffmate.Preset.delete(uuid)
+    },
     async load(page: number, perPage: number) {
       page = page ?? 0;
       perPage = perPage ?? 100;

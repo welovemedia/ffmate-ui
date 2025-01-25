@@ -20,3 +20,20 @@ export interface Preset {
   preProcessing?: PrePostProcessingReduced;
   postProcessing?: PrePostProcessingReduced;
 }
+
+export interface NewPreset {
+  name: string;
+  description: string;
+
+  command: string;
+  priority: number;
+  outputFile: string;
+
+  preProcessing?: PrePostProcessing;
+  postProcessing?: PrePostProcessing;
+}
+
+export interface PrePostProcessing {
+  scriptPath?: string;
+  sidecarPath?: string;
+}
