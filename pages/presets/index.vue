@@ -154,7 +154,7 @@ const tableItems = computed(() => {
             }"
             :style="`width:${cell.raw.progress}%`"
           ></div>
-          <div class="relative text-primary-900 font-medium text-sm">
+          <div class="relative text-gray-900 font-medium text-sm">
             {{ cell.label }}
           </div>
         </div>
@@ -184,7 +184,7 @@ const tableItems = computed(() => {
         :class="{ 'h-auto': selectedItems.includes(row.uuid) }"
       >
         <div
-          class="px-12 border border-gray-900 bg-gray-800/50 -mt-2 rounded-b-lg w-[99%] mx-auto"
+          class="px-12 shadow-sm shadow-gray-900 mb-2 bg-gray-900 -mt-2 rounded-b-lg w-[99%] mx-auto"
         >
           <PresetDetails :preset="row.raw" />
         </div>

@@ -7,13 +7,19 @@ const originalStore = defineStore("tasks", {
     return { tasks: [], total: 0, loaded: false };
   },
   actions: {
-    async delete() {},
-    async cancel() {},
+    async delete(uuid: string) {
+      useFFMate().Tasks.deletetTask(uuid);
+    },
+    async cancel(uuid: string) {
+      useFFMate().Tasks.cancelTask(uuid);
+    },
+    async restart(uuid: string) {
+      useFFMate().Tasks.restartTask(uuid);
+    },
     async load(page: number, perPage: number, status?: string) {
       page = page ?? 0;
       perPage = perPage ?? 100;
-      const { $ffmate } = useNuxtApp();
-      const t = await $ffmate.Tasks.getTasks(page, perPage, status);
+      const t = await useFFMate().Tasks.getTasks(page, perPage, status);
       this.loaded = true;
       if (t) {
         this.tasks = t.items;
@@ -26,7 +32,6 @@ const originalStore = defineStore("tasks", {
 const store = ref<ReturnType<typeof originalStore> | null>();
 
 export const useTaskStore = (): ReturnType<typeof originalStore> => {
-  const { $ffmate } = useNuxtApp();
   if (!store.value) {
     store.value = originalStore();
 
@@ -58,7 +63,7 @@ export const useTaskStore = (): ReturnType<typeof originalStore> => {
       }
     }, 250);
 
-    $ffmate.Websocket.connect({
+    useFFMate().Websocket.connect({
       onAdd: (data: WebsocketMessage) => {
         updates.value.push(data);
       },

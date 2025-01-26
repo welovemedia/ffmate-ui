@@ -38,6 +38,7 @@ interface Props {
 
   rowClass?: string;
   headersClass?: string;
+  headerRowClass?: string;
 
   selectAble?: SelectableType;
 
@@ -159,6 +160,7 @@ const updateSorting = (header: Header) => {
             :headers="headers"
             :hoveredRow
             :rowClass
+            :headerRowClass
             :selectedRows
             :sorting
             :headersClass
@@ -197,6 +199,7 @@ const updateSorting = (header: Header) => {
           :column="columns[i]"
           :selectedRows
           :rowClass
+          :headerRowClass
           :headersClass
           :selectAble
           :sorting

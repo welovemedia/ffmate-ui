@@ -8,7 +8,12 @@ export interface Task {
   inputFile: RawResolved;
   outputFile: RawResolved;
 
-  status: string;
+  status:
+    | "QUEUED"
+    | "RUNNING"
+    | "DONE_SUCCESSFUL"
+    | "DONE_ERROR"
+    | "DONE_CANCELED";
   progress: number;
 
   error?: string;

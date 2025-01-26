@@ -8,6 +8,7 @@ interface Props {
   rowIndex: number;
   rowsTotal: number;
 
+  headerRowClass?: string;
   headersClass?: string;
   rowClass?: string;
 
@@ -43,7 +44,7 @@ const isIndeterminate = computed(() => {
   <!-- header row -->
   <template v-if="rowIndex === 0">
     <!-- checkbox -->
-    <tr>
+    <tr :class="[headerRowClass]">
       <td
         v-if="
           selectAble?.includes('checkbox') && !selectAble?.includes('single')
@@ -100,7 +101,7 @@ const isIndeterminate = computed(() => {
     @mouseenter="emit('update:hoveredRow', rowIndex)"
     @mouseleave="emit('update:hoveredRow', -1)"
   >
-    <!-- item rows checkboy -->
+    <!-- item rows checkbox -->
     <td
       v-if="selectAble?.includes('checkbox') && !selectAble?.includes('single')"
       class="rounded-l-lg px-6"

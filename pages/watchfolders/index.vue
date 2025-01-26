@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ChevronRightIcon } from "@heroicons/vue/24/solid";
 import { TrashIcon } from "@heroicons/vue/24/solid";
-import type { Preset } from "~/sdk/ffmate/lib/interfaces/presets/preset";
 import type { Watchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolders/watchfolder";
 
 const watchfolderStore = useWatchfolderStore();
@@ -164,7 +163,7 @@ const tableItems = computed(() => {
         :class="{ 'h-auto': selectedItems.includes(row.uuid) }"
       >
         <div
-          class="px-12 border border-gray-900 bg-gray-800/50 -mt-2 rounded-b-lg w-[99%] mx-auto"
+          class="px-12 shadow-sm shadow-gray-900 mb-2 bg-gray-900 -mt-2 rounded-b-lg w-[99%] mx-auto"
         >
           <WatchfolderDetails :watchfolder="row.raw" />
         </div>

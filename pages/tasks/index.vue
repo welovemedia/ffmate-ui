@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-import { ChevronRightIcon, Cog6ToothIcon } from "@heroicons/vue/24/solid";
+import {
+  ArrowPathIcon,
+  ChevronRightIcon,
+  Cog6ToothIcon,
+  StopCircleIcon,
+} from "@heroicons/vue/24/solid";
 import { TrashIcon } from "@heroicons/vue/24/solid";
 import { StopIcon } from "@heroicons/vue/24/solid";
 import { FolderIcon } from "@heroicons/vue/24/outline";
@@ -11,6 +16,7 @@ const { perPage } = useConfig();
 const page = ref(0);
 
 watch(page, () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
   taskStore.load(page.value, perPage);
 });
 
@@ -18,15 +24,13 @@ const selectedItems = ref<string[]>([]);
 
 const showFilter = ref(false);
 const activeFilter = ref<string | undefined>(undefined);
-watch(activeFilter, () => {
-  taskStore.load(page.value, perPage, activeFilter.value);
+watch(activeFilter, async () => {
+  page.value = 0;
+  await taskStore.load(page.value, perPage, activeFilter.value);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
 const processBatches = ref<string[]>([]);
-
-const deleteTask = (task: Task) => {};
-
-const cancelTask = (task: Task) => {};
 
 const tasks = computed(() => {
   const tasks = taskStore.tasks;
@@ -149,7 +153,7 @@ const tableItems = computed(() => {
       >
         <span>Status</span>
         <Cog6ToothIcon
-          class="size-3 cursor-pointer text-gray-400 hover:text-gray-300"
+          class="size-3 cursor-pointer mt-[2px] text-gray-400 hover:text-gray-300"
           @click="showFilter = true"
         />
       </div>
@@ -188,6 +192,7 @@ const tableItems = computed(() => {
     <template #cell.label="{ cell, hoveredRow }">
       <div
         v-if="cell.id === 'name'"
+        :id="`row-${cell.raw.uuid}`"
         class="flex flex-col items-center"
         :class="{ 'pl-4': !cell.raw.isBatch && cell.raw.batch }"
       >
@@ -236,7 +241,7 @@ const tableItems = computed(() => {
             cell.label === 'RUNNING' ||
             cell.label === 'PRE_PROCESSING' ||
             cell.label === 'POST_PROCESSING',
-          'text-primary-400': cell.label === 'DONE_SUCCESSFUL',
+          'text-green-400': cell.label === 'DONE_SUCCESSFUL',
           'text-red-400': cell.label === 'DONE_ERROR',
           'text-yellow-400': cell.label === 'DONE_CANCELED',
         }"
@@ -261,7 +266,7 @@ const tableItems = computed(() => {
             }"
             :style="`width:${cell.raw.progress}%`"
           ></div>
-          <div class="relative text-primary-900 font-medium text-sm">
+          <div class="relative text-gray-900 font-medium text-sm">
             {{ cell.label }}
           </div>
         </div>
@@ -271,16 +276,24 @@ const tableItems = computed(() => {
         v-if="cell.id === 'chevron' && !cell.raw.isBatch"
         class="flex flex-row space-x-2 justify-end w-full"
       >
-        <template v-if="cell.rowIndex === hoveredRow && false">
-          <TrashIcon
+        <template v-if="cell.rowIndex === hoveredRow">
+          <ArrowPathIcon
             v-if="cell.raw.status.indexOf('DONE_') !== -1"
             class="size-3 hover:text-gray-300 text-gray-400"
-            @click="deleteTask(cell.raw)"
+            @click.stop="taskStore.restart(cell.raw.uuid)"
           />
-          <StopIcon
-            v-if="cell.raw.status === 'QUEUED'"
-            class="size-4 hover:text-gray-300 text-gray-400"
-            @click="cancelTask(cell.raw)"
+          <StopCircleIcon
+            v-if="cell.raw.status === 'RUNNING'"
+            class="size-3 hover:text-gray-300 text-gray-400"
+            @click.stop="taskStore.cancel(cell.raw.uuid)"
+          />
+          <TrashIcon
+            v-if="
+              cell.raw.status.indexOf('DONE_') !== -1 ||
+              cell.raw.status === 'QUEUED'
+            "
+            class="size-3 hover:text-gray-300 text-gray-400"
+            @click.stop="taskStore.delete(cell.raw.uuid)"
           />
         </template>
         <ChevronRightIcon
@@ -297,7 +310,7 @@ const tableItems = computed(() => {
         :class="{ 'h-auto': selectedItems.includes(row.uuid) }"
       >
         <div
-          class="px-12 border border-gray-900 bg-gray-800/50 -mt-2 rounded-b-lg w-[99%] mx-auto"
+          class="px-12 shadow-sm shadow-gray-900 mb-2 bg-gray-900 -mt-2 rounded-b-lg w-[99%] mx-auto"
         >
           <TaskDetails :task="row.raw" />
         </div>

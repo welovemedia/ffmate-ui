@@ -35,7 +35,7 @@ const resolvedNuxtLink = resolveComponent("NuxtLink");
       :class="[
         rowClass,
         {
-          ' bg-gray-800':
+          ' bg-gray-900':
             hoveredRow === rowIndex || selectedRows?.includes(cell.rowUuid),
           'rounded-l-lg':
             columnIndex === 0 && !selectAble?.includes('checkbox'),

@@ -25,6 +25,18 @@ export default class TaskService extends Base {
     return { items: res.data, total: total } as PaginatedResponse<Task[]>;
   };
 
+  public deletetTask = async (uuid: string) => {
+    return await this.axios.delete<void>(this.getEndpoint(`/${uuid}`));
+  };
+
+  public cancelTask = async (uuid: string) => {
+    return await this.axios.patch<Task>(this.getEndpoint(`/${uuid}/cancel`));
+  };
+
+  public restartTask = async (uuid: string) => {
+    return await this.axios.patch<Task>(this.getEndpoint(`/${uuid}/restart`));
+  };
+
   protected getEndpoint(endpoint: string): string {
     return `${this.server}/api/v1/tasks${endpoint}`;
   }

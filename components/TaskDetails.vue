@@ -122,7 +122,7 @@ defineProps<Props>();
                                     :style="`width:${task.progress}%`"
                                 ></div>
                                 <div
-                                    class="relative text-primary-900 font-medium text-sm"
+                                    class="relative text-gray-900 font-medium text-sm"
                                 >
                                     {{ task.progress }}%
                                 </div>
