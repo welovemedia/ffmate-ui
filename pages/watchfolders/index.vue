@@ -105,7 +105,7 @@ const tableItems = computed(() => {
           'text-green-500': !cell.raw.error,
         }"
       >
-        {{ cell.raw.error ?? 'OK' }}
+        {{ cell.raw.error ?? "OK" }}
       </span>
       <div
         v-if="cell.id === 'name'"
@@ -132,7 +132,11 @@ const tableItems = computed(() => {
                   cell.raw.finishedAt ??
                     cell.raw.startedAt ??
                     cell.raw.createdAt
-                )
+                ),
+                {
+                  showSecond: true,
+                  updateInterval: 1,
+                }
               )
             }}
           </span>
