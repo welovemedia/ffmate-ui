@@ -1,47 +1,52 @@
 export interface Task {
-  uuid: string;
-  name?: string;
+  uuid: string
+  name?: string
 
-  batch?: string;
+  batch?: string
 
-  command: RawResolved;
-  inputFile: RawResolved;
-  outputFile: RawResolved;
+  command: RawResolved
+  inputFile: RawResolved
+  outputFile: RawResolved
 
   status:
     | "QUEUED"
     | "RUNNING"
     | "DONE_SUCCESSFUL"
     | "DONE_ERROR"
-    | "DONE_CANCELED";
-  progress: number;
+    | "DONE_CANCELED"
+    | "PRE_PROCESSING"
+    | "POST_PROCESSING"
+    | ""
+  progress: number
+  remaining: number
+  lastRemaining: number
 
-  error?: string;
+  error?: string
 
-  priority: number;
+  priority: number
 
-  source: "watchfolder" | "api";
+  source: "watchfolder" | "api"
 
-  startedAt?: number;
-  finishedAt?: number;
+  startedAt?: number
+  finishedAt?: number
 
-  createdAt: number;
-  updatedAt: number;
+  createdAt: number
+  updatedAt: number
 
-  preProcessing?: PrePostProcessing;
+  preProcessing?: PrePostProcessing
 
-  postProcessing?: PrePostProcessing;
+  postProcessing?: PrePostProcessing
 }
 
 interface PrePostProcessing {
-  scriptPath?: RawResolved;
-  sidecarPath?: RawResolved;
-  error?: string;
-  startedAt?: number;
-  finishedAt?: number;
+  scriptPath?: RawResolved
+  sidecarPath?: RawResolved
+  error?: string
+  startedAt?: number
+  finishedAt?: number
 }
 
 interface RawResolved {
-  raw: string;
-  resolved?: string;
+  raw: string
+  resolved?: string
 }

@@ -1,45 +1,43 @@
 <script lang="ts" setup>
+import { FolderIcon, InboxIcon } from "@heroicons/vue/24/outline"
 import {
   ArrowPathIcon,
   ChevronRightIcon,
   Cog6ToothIcon,
   StopCircleIcon,
-} from "@heroicons/vue/24/solid";
-import { TrashIcon } from "@heroicons/vue/24/solid";
-import { StopIcon } from "@heroicons/vue/24/solid";
-import { FolderIcon } from "@heroicons/vue/24/outline";
-import { InboxIcon } from "@heroicons/vue/24/outline";
-import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task";
+  TrashIcon,
+} from "@heroicons/vue/24/solid"
+import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task"
 
-const taskStore = useTaskStore();
-const { perPage } = useConfig();
-const page = ref(0);
+const taskStore = useTaskStore()
+const { perPage } = useConfig()
+const page = ref(0)
 
 watch(page, () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  taskStore.load(page.value, perPage);
-});
+  window.scrollTo({ top: 0, behavior: "smooth" })
+  taskStore.load(page.value, perPage)
+})
 
-const selectedItems = ref<string[]>([]);
+const selectedItems = ref<string[]>([])
 
-const showFilter = ref(false);
-const activeFilter = ref<string | undefined>(undefined);
+const showFilter = ref(false)
+const activeFilter = ref<string | undefined>(undefined)
 watch(activeFilter, async () => {
-  page.value = 0;
-  await taskStore.load(page.value, perPage, activeFilter.value);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
+  page.value = 0
+  await taskStore.load(page.value, perPage, activeFilter.value)
+  window.scrollTo({ top: 0, behavior: "smooth" })
+})
 
-const processBatches = ref<string[]>([]);
+const processBatches = ref<string[]>([])
 
 const tasks = computed(() => {
-  const tasks = taskStore.tasks;
-  const result = [] as Task[];
+  const tasks = taskStore.tasks
+  const result = [] as Task[]
 
-  processBatches.value = [];
+  processBatches.value = []
 
   for (let i = 0; i < tasks.length; i++) {
-    const batch = tasks[i].batch;
+    const batch = tasks[i].batch
     if (batch && !processBatches.value.includes(batch)) {
       result.push({
         batch: tasks[i].batch!,
@@ -54,6 +52,8 @@ const tasks = computed(() => {
         outputFile: { raw: "" },
         createdAt: tasks[i].createdAt,
         updatedAt: tasks[i].updatedAt,
+        remaining: -1,
+        lastRemaining: -1,
         progress:
           Math.round(
             (tasks
@@ -62,14 +62,14 @@ const tasks = computed(() => {
               tasks.filter((t) => t.batch === tasks[i].batch).length) *
               100
           ) / 100,
-      } as Task);
-      processBatches.value.push(batch);
+      } as Task)
+      processBatches.value.push(batch)
     }
-    result.push(tasks[i]);
+    result.push(tasks[i])
   }
 
-  return result;
-});
+  return result
+})
 
 const tableItems = computed(() => {
   return tasks.value.map((t: Task) => {
@@ -99,15 +99,15 @@ const tableItems = computed(() => {
         id: "outputFile",
       },
       { id: "chevron" },
-    ];
+    ]
 
     return {
       raw: t,
       uuid: t.uuid,
       cells: cells,
-    };
-  });
-});
+    }
+  })
+})
 </script>
 
 <template>
@@ -223,7 +223,10 @@ const tableItems = computed(() => {
                   cell.raw.finishedAt ??
                     cell.raw.startedAt ??
                     cell.raw.createdAt
-                )
+                ),
+                {
+                  showSecond: false,
+                }
               )
             }}
           </span>
@@ -234,40 +237,55 @@ const tableItems = computed(() => {
         ><span v-if="!cell.raw.isBatch">{{ cell.label }}</span></span
       >
 
-      <span
-        v-if="cell.id === 'status'"
-        :class="{
-          'text-blue-400':
-            cell.label === 'RUNNING' ||
-            cell.label === 'PRE_PROCESSING' ||
-            cell.label === 'POST_PROCESSING',
-          'text-green-400': cell.label === 'DONE_SUCCESSFUL',
-          'text-red-400': cell.label === 'DONE_ERROR',
-          'text-yellow-400': cell.label === 'DONE_CANCELED',
-        }"
-        >{{ cell.label }}</span
-      >
+      <div v-if="cell.id === 'status'">
+        <span
+          :class="{
+            'text-blue-400':
+              cell.label === 'RUNNING' ||
+              cell.label === 'PRE_PROCESSING' ||
+              cell.label === 'POST_PROCESSING',
+            'text-green-400': cell.label === 'DONE_SUCCESSFUL',
+            'text-red-400': cell.label === 'DONE_ERROR',
+            'text-yellow-400': cell.label === 'DONE_CANCELED',
+          }"
+          >{{ cell.label }}
+          <span
+            v-if="
+              cell.raw.status === 'RUNNING' &&
+              cell.raw.lastRemaining &&
+              cell.raw.lastRemaining > 0
+            "
+            class="text-xs text-gray-300"
+            ><br />~
+            {{
+              useTimeAgo(Date.now() + cell.raw.lastRemaining * 1000, {
+                showSecond: true,
+              }).value.replaceAll("in ", "")
+            }}
+            remaining</span
+          ></span
+        >
+      </div>
 
-      <div
-        v-if="cell.id === 'progress'"
-        class="bg-white rounded-xl shadow-sm overflow-hidden p-1 w-40"
-      >
-        <div class="relative h-4 flex items-center justify-center">
-          <div
-            class="absolute top-0 bottom-0 left-0 rounded-lg transition-all duration-300 ease-in-out"
-            :class="{
-              'bg-blue-500':
-                cell.raw.status === 'RUNNING' ||
-                cell.raw.stats === 'PRE_PROCESSING' ||
-                cell.raw.status === 'POST_PROCESSING',
-              'bg-green-400': cell.raw.status === 'DONE_SUCCESSFUL',
-              'bg-red-400': cell.raw.status === 'DONE_ERROR',
-              'bg-yellow-400': cell.raw.status === 'DONE_CANCELED',
-            }"
-            :style="`width:${cell.raw.progress}%`"
-          ></div>
-          <div class="relative text-gray-900 font-medium text-sm">
-            {{ cell.label }}
+      <div v-if="cell.id === 'progress'" class="flex flex-col items-end">
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden p-1 w-40">
+          <div class="relative h-4 flex items-center justify-center">
+            <div
+              class="absolute top-0 bottom-0 left-0 rounded-lg transition-all duration-300 ease-in-out"
+              :class="{
+                'bg-blue-500':
+                  cell.raw.status === 'RUNNING' ||
+                  cell.raw.stats === 'PRE_PROCESSING' ||
+                  cell.raw.status === 'POST_PROCESSING',
+                'bg-green-400': cell.raw.status === 'DONE_SUCCESSFUL',
+                'bg-red-400': cell.raw.status === 'DONE_ERROR',
+                'bg-yellow-400': cell.raw.status === 'DONE_CANCELED',
+              }"
+              :style="`width:${cell.raw.progress}%`"
+            ></div>
+            <div class="relative text-gray-900 font-medium text-sm">
+              {{ cell.label }}
+            </div>
           </div>
         </div>
       </div>
