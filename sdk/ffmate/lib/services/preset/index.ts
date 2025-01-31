@@ -19,6 +19,14 @@ export default class PresetService extends Base {
     return { items: res.data, total: total } as PaginatedResponse<Preset[]>;
   };
 
+  public getGlobalPresets = async () => {
+    const res = await this.axios.get<NewPreset[]>(
+      "https://earth.ffmate.io/_presets/index.json"
+    );
+
+    return res.data;
+  };
+
   public delete = async (uuid: string) => {
     await this.axios.delete(this.getEndpoint(`/${uuid}`));
   };

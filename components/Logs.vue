@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { XMarkIcon } from "@heroicons/vue/24/solid"
-import { useLogStore } from "~/stores/logStore"
+import { XMarkIcon } from "@heroicons/vue/24/solid";
+import { useLogStore } from "~/stores/logStore";
 
-const logStore = useLogStore()
+const logStore = useLogStore();
 const logs = computed(() => {
-  return logStore.logs
-})
+  return logStore.logs;
+});
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const logs = computed(() => {
       <div class="flex flex-row space-x-4 items-center sticky top-5">
         <span
           class="text-xs text-gray-400 hover:text-gray-300 cursor-pointer"
-          @click="logs = []"
+          @click="logStore.logs = []"
           >Clear all entries ({{ logs.length }})
         </span>
         <span>|</span>
