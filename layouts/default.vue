@@ -1,18 +1,27 @@
 <script lang="ts" setup>
-import { PlusIcon } from "@heroicons/vue/24/solid";
+import { PlusIcon } from "@heroicons/vue/24/solid"
 
-const confirmStore = useConfirmStore();
-const route = useRoute();
+const confirmStore = useConfirmStore()
+const logsStore = useLogStore()
+const route = useRoute()
 
 const add = () => {
   navigateTo({
     name: route.name?.toString() + "-new",
-  });
-};
+  })
+}
 </script>
 
 <template>
   <ModalConfirm v-if="confirmStore.confirm" :confirm="confirmStore.confirm" />
+  <Transition
+    enter-from-class="translate-y-[500px] opacity-0"
+    enter-to-class="translate-y-0 opacity-100"
+    leave-from-class="translate-y-0 opacity-100"
+    leave-to-class="translate-y-[500px] opacity-0"
+  >
+    <Logs v-if="logsStore.open" class="transition-all duration-500 ease-in-out" />
+  </Transition>
   <div class="min-h-screen w-full bg-[#18181a] text-white">
     <Navigation />
     <div class="container pt-12 w-full m-auto">

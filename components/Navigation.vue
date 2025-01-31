@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import type { RouteLocationNamedRaw } from "vue-router";
+import type { RouteLocationNamedRaw } from "vue-router"
 
-const route = useRoute();
+const logStore = useLogStore()
+
+const route = useRoute()
 
 const isActive = (to: RouteLocationNamedRaw) => {
-  return route.name?.toString().startsWith(to.name?.toString() ?? "");
-};
+  return route.name?.toString().startsWith(to.name?.toString() ?? "")
+}
 
 const menu = [
   {
@@ -26,7 +28,7 @@ const menu = [
       name: "presets",
     } as RouteLocationNamedRaw,
   },
-];
+]
 </script>
 
 <template>
@@ -42,7 +44,7 @@ const menu = [
       <ul class="flex flex-row space-x-6 items-center select-none">
         <li
           v-for="item in menu"
-          class="cursor-pointer"
+          class="cursor-pointer hover:text-primary-400 transition-colors"
           :class="{ 'text-primary-400': isActive(item.to) }"
           @click="navigateTo(item.to)"
         >
@@ -50,6 +52,19 @@ const menu = [
         </li>
       </ul>
     </div>
-    <div class="w-1/3">&nbsp;</div>
+    <div class="w-1/3 flex justify-end" @click="logStore.open = !logStore.open">
+      <Transition
+        enter-from-class="translate-x-[50px] opacity-0"
+        enter-to-class="translate-x-0 opacity-100"
+        leave-from-class="translate-x-0 opacity-100"
+        leave-to-class="translate-x-[50px] opacity-0"
+      >
+        <span
+          v-if="!logStore.open"
+          class="cursor-pointer hover:text-primary-400 transition-all"
+          >Logs</span
+        >
+      </Transition>
+    </div>
   </div>
 </template>

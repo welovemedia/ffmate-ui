@@ -1,6 +1,11 @@
 * {
     scrollbar-width: thin;
-    scrollbar-color: theme("colors.gray.500") theme("colors.gray.950");
+    scrollbar-color: theme("colors.primary.500") theme("colors.gray.950");
+}
+
+div.logger {
+    scrollbar-width: thin;
+    scrollbar-color: theme("colors.primary.500") theme("colors.gray.750");
 }
 
 /* Chrome, Edge, and Safari */

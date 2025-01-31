@@ -1,8 +1,8 @@
-import type { AxiosInstance } from "axios";
-import Base, { type Options } from "../Base";
-import type { Task } from "../interfaces/tasks/task";
-import type { Preset } from "../interfaces/presets/preset";
-import type { Watchfolder } from "../interfaces/watchfolders/watchfolder";
+import type { AxiosInstance } from "axios"
+import Base, { type Options } from "../Base"
+import type { Preset } from "../interfaces/presets/preset"
+import type { Task } from "../interfaces/tasks/task"
+import type { Watchfolder } from "../interfaces/watchfolders/watchfolder"
 
 export type CallbackEvent = {
   id?: string;
@@ -13,7 +13,7 @@ export type CallbackEvent = {
 
 export interface WebsocketMessage {
   subject: string;
-  payload: Task | Preset | Watchfolder;
+  payload: Task | Preset | Watchfolder | string;
 }
 
 export default class WebsocketService extends Base {
