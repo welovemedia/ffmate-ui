@@ -6,5 +6,5 @@ export const useFFMate = () => {
     const { $ffmate } = useNuxtApp();
     ffmate.value = $ffmate;
   }
-  return ffmate.value;
+  return ffmate.value!;
 };
