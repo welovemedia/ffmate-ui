@@ -1,11 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Poppins";
+    --color-primary-50: #ecfdf4;
+    --color-primary-100: #d2f9e3;
+    --color-primary-200: #a9f1cd;
+    --color-primary-300: #71e4b1;
+    --color-primary-400: #47d299;
+    --color-primary-500: #15b478;
+    --color-primary-600: #099261;
+    --color-primary-700: #077551;
+    --color-primary-800: #095c41;
+    --color-primary-900: #084c37;
+    --color-primary-950: #032b1f;
+    --color-gray-300: #d1d5db;
+    --color-gray-350: #b1b1bb;
+    --color-gray-400: #9a9a9a;
+    --color-gray-500: #636363;
+    --color-gray-600: #414141;
+    --color-gray-650: #313131;
+    --color-gray-700: #292929;
+    --color-gray-750: #202020;
+    --color-gray-800: #18181b;
+    --color-gray-900: #0c0c0c;
+}
+
 * {
     scrollbar-width: thin;
-    scrollbar-color: theme("colors.primary.500") theme("colors.gray.800");
+    scrollbar-color-primary: theme("color-primary-500") theme("color-gray-800");
 }
 
 div.logger {
     scrollbar-width: thin;
-    scrollbar-color: theme("colors.primary.500") theme("colors.gray.750");
+    scrollbar-color-primary: theme("color-primary-500") theme("color-gray-750");
 }
 
 /* Chrome, Edge, and Safari */
@@ -14,13 +41,13 @@ div.logger {
 }
 
 *::-webkit-scrollbar-track {
-    background: theme("colors.gray.800");
+    background: theme("color-gray-800");
     width: 5px;
     border-radius: 5px;
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: theme("colors.gray.500");
+    background-color-primary: theme("color-gray-500");
     border-radius: 14px;
-    border: 3px solid theme("colors.gray.800");
+    border: 3px solid theme("color-gray-800");
 }
