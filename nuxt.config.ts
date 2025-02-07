@@ -24,7 +24,7 @@ export default defineNuxtConfig({
         {
           rel: "icon",
           type: "image/webp",
-          href: "/icon_black.webp",
+          href: "/ui/icon_black.webp",
         },
       ],
       title: "ffmate",
