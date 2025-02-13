@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { ChevronDownIcon } from "@heroicons/vue/24/solid";
-import type { NewWatchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolders/watchfolder";
+import { ChevronDownIcon } from "@heroicons/vue/24/solid"
+import type { NewWatchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolders/watchfolder"
 
 const presetStore = usePresetStore();
 
@@ -123,7 +123,7 @@ const save = () => {
                             <label
                                 for="location"
                                 class="block text-sm/6 font-medium text-white"
-                                >Location</label
+                                >Preset *</label
                             >
                             <div class="mt-2 grid grid-cols-1">
                                 <select
