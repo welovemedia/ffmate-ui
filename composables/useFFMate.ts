@@ -1,6 +1,6 @@
-import type SevWtf from "~/sdk/ffmate/lib/ffmate";
+import type FFMate from "~/sdk/ffmate/lib/ffmate"
 
-let ffmate = ref<SevWtf | null>(null);
+let ffmate = ref<FFMate | null>(null);
 export const useFFMate = () => {
   if (ffmate.value === null) {
     const { $ffmate } = useNuxtApp();
