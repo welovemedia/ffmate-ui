@@ -1,4 +1,4 @@
-import { type AxiosInstance } from "axios";
+import { type AxiosInstance } from "axios"
 
 export interface Options {}
 
@@ -11,7 +11,7 @@ export default abstract class Base {
     this.options = options;
     this.server =
       process.env.NODE_ENV === "production"
-        ? `http://localhost:${self.location.port}`
+        ? `http://${self.location.host}`
         : `http://localhost:3000`;
     this.axios = axios;
   }
