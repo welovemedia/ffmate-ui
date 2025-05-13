@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { FolderIcon, InboxIcon } from "@heroicons/vue/24/outline"
-import {
-    default as humanizeDuration
-} from "humanize-duration"
+import { default as humanizeDuration } from "humanize-duration"
 import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task"
 
 interface Props {
@@ -25,8 +23,10 @@ defineProps<Props>()
       <p class="max-w-2xl text-sm/6 text-gray-400">
         created
         {{
-          (useTimeAgo(new Date(task.createdAt)),
-          { showSecond: true, updateInterval: 1_000 })
+          useTimeAgo(new Date(task.createdAt), {
+            showSecond: true,
+            updateInterval: 1_000,
+          })
         }}
       </p>
     </div>

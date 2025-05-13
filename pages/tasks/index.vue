@@ -1,43 +1,43 @@
 <script lang="ts" setup>
-import { FolderIcon, InboxIcon } from "@heroicons/vue/24/outline";
+import { FolderIcon, InboxIcon } from "@heroicons/vue/24/outline"
 import {
   ArrowPathIcon,
   ChevronRightIcon,
   Cog6ToothIcon,
   StopCircleIcon,
   TrashIcon,
-} from "@heroicons/vue/24/solid";
-import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task";
+} from "@heroicons/vue/24/solid"
+import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task"
 
-const taskStore = useTaskStore();
-const { perPage } = useConfig();
-const page = ref(0);
+const taskStore = useTaskStore()
+const { perPage } = useConfig()
+const page = ref(0)
 
 watch(page, () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  taskStore.load(page.value, perPage);
-});
+  window.scrollTo({ top: 0, behavior: "smooth" })
+  taskStore.load(page.value, perPage)
+})
 
-const selectedItems = ref<string[]>([]);
+const selectedItems = ref<string[]>([])
 
-const showFilter = ref(false);
-const activeFilter = ref<string | undefined>(undefined);
+const showFilter = ref(false)
+const activeFilter = ref<string | undefined>(undefined)
 watch(activeFilter, async () => {
-  page.value = 0;
-  await taskStore.load(page.value, perPage, activeFilter.value);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
+  page.value = 0
+  await taskStore.load(page.value, perPage, activeFilter.value)
+  window.scrollTo({ top: 0, behavior: "smooth" })
+})
 
-const processBatches = ref<string[]>([]);
+const processBatches = ref<string[]>([])
 
 const tasks = computed(() => {
-  const tasks = taskStore.tasks;
-  const result = [] as Task[];
+  const tasks = taskStore.tasks
+  const result = [] as Task[]
 
-  processBatches.value = [];
+  processBatches.value = []
 
   for (let i = 0; i < tasks.length; i++) {
-    const batch = tasks[i].batch;
+    const batch = tasks[i].batch
     if (batch && !processBatches.value.includes(batch)) {
       result.push({
         batch: tasks[i].batch!,
@@ -62,14 +62,14 @@ const tasks = computed(() => {
               tasks.filter((t) => t.batch === tasks[i].batch).length) *
               100
           ) / 100,
-      } as Task);
-      processBatches.value.push(batch);
+      } as Task)
+      processBatches.value.push(batch)
     }
-    result.push(tasks[i]);
+    result.push(tasks[i])
   }
 
-  return result;
-});
+  return result
+})
 
 const tableItems = computed(() => {
   return tasks.value.map((t: Task) => {
@@ -99,15 +99,15 @@ const tableItems = computed(() => {
         id: "outputFile",
       },
       { id: "chevron" },
-    ];
+    ]
 
     return {
       raw: t,
       uuid: t.uuid,
       cells: cells,
-    };
-  });
-});
+    }
+  })
+})
 </script>
 
 <template>
