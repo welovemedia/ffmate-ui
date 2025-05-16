@@ -1,32 +1,38 @@
 <script lang="ts" setup>
-import { ChevronRightIcon } from "@heroicons/vue/24/solid";
-import { TrashIcon } from "@heroicons/vue/24/solid";
-import type { Watchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolders/watchfolder";
+import { ChevronRightIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/solid"
+import type { Watchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolders/watchfolder"
 
-const watchfolderStore = useWatchfolderStore();
-const presetStore = usePresetStore();
-const { perPage } = useConfig();
-const page = ref(0);
+const watchfolderStore = useWatchfolderStore()
+const presetStore = usePresetStore()
+const { perPage } = useConfig()
+const page = ref(0)
 
 watch(page, () => {
-  watchfolderStore.load(page.value, perPage);
-});
+  watchfolderStore.load(page.value, perPage)
+})
 
-const selectedItems = ref<string[]>([]);
+const selectedItems = ref<string[]>([])
+
+const editWatchfolder = (watchfolder: Watchfolder) => {
+  useRouter().push({
+    name: "watchfolders-new",
+    query: { edit: watchfolder.uuid },
+  })
+}
 
 const deleteWatchfolder = (watchfolder: Watchfolder) => {
   useConfirm({
     title: "Delete Watchfolder",
     message: `Do you really want to delete the watchfolder "${watchfolder.name}"?`,
     successCallback: async () => {
-      await watchfolderStore.delete(watchfolder.uuid);
+      await watchfolderStore.delete(watchfolder.uuid)
     },
-  });
-};
+  })
+}
 
 const presets = computed(() => {
-  return watchfolderStore.watchfolders;
-});
+  return watchfolderStore.watchfolders
+})
 
 const tableItems = computed(() => {
   return presets.value.map((t: Watchfolder) => {
@@ -60,15 +66,15 @@ const tableItems = computed(() => {
         id: "lastCheck",
       },
       { label: "", id: "chevron" },
-    ];
+    ]
 
     return {
       raw: t,
       uuid: t.uuid,
       cells: cells,
-    };
-  });
-});
+    }
+  })
+})
 </script>
 
 <template>
@@ -148,6 +154,10 @@ const tableItems = computed(() => {
         class="flex flex-row space-x-2 justify-end w-full"
       >
         <template v-if="cell.rowIndex === hoveredRow">
+          <PencilIcon
+            class="size-3 hover:text-gray-300 text-gray-400 z-50"
+            @click.stop="editWatchfolder(cell.raw)"
+          />
           <TrashIcon
             class="size-3 hover:text-gray-300 text-gray-400 z-50"
             @click.stop="deleteWatchfolder(cell.raw)"
