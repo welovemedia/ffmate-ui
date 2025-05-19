@@ -9,10 +9,10 @@ const presetStore = usePresetStore()
 const route = useRoute()
 
 const editWatchfolder = ref<Watchfolder | null>(null)
-
-if (route.query["edit"]) {
+const editWatchfolderId = route.query["edit"] as string
+if (editWatchfolderId) {
   await useFFMate()
-    .Watchfolder.getWatchfolder(route.query["edit"] as string)
+    .Watchfolder.getWatchfolder(editWatchfolderId)
     .then((preset) => {
       editWatchfolder.value = preset
     })
@@ -72,9 +72,15 @@ const save = () => {
 <template>
   <div class="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
     <div class="px-4 sm:px-0">
-      <h2 class="text-base/7 font-semibold text-gray-200">New Watchfolder</h2>
+      <h2 class="text-base/7 font-semibold text-gray-200">
+        {{ editWatchfolderId ? "Edit" : "New" }} Watchfolder
+      </h2>
       <p class="mt-1 text-sm/6 text-gray-400">
-        Create a new watchfolder to automatically create new tasks
+        {{
+          editWatchfolderId
+            ? "Edit watchfolder to automatically create new tasks"
+            : "Create a new watchfolder to automatically create new tasks"
+        }}
       </p>
     </div>
 

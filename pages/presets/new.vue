@@ -2,17 +2,18 @@
 import { ArrowUpIcon, PlusCircleIcon } from "@heroicons/vue/24/solid"
 import FormFieldText from "~/components/Form/FormFieldText.vue"
 import type {
-    NewPreset,
-    Preset,
+  NewPreset,
+  Preset,
 } from "~/sdk/ffmate/lib/interfaces/presets/preset"
 
 const route = useRoute()
 
 const editPreset = ref<Preset | null>(null)
+const editPresetId = route.query["edit"] as string
 
-if (route.query["edit"]) {
+if (editPresetId) {
   await useFFMate()
-    .Preset.getPreset(route.query["edit"] as string)
+    .Preset.getPreset(editPresetId)
     .then((preset) => {
       editPreset.value = preset
     })
@@ -107,9 +108,15 @@ const save = () => {
   <div class="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
     <div class="px-4 sm:px-0 flex flex-col space-y-2">
       <div class="flex flex-col">
-        <h2 class="text-base/7 font-semibold text-gray-200">New Preset</h2>
+        <h2 class="text-base/7 font-semibold text-gray-200">
+          {{ editPresetId ? "Edit" : "New" }} Preset
+        </h2>
         <p class="text-sm/6 text-gray-400">
-          Create a new preset to use in your watchfolders.
+          {{
+            editPresetId
+              ? "Edit preset to use in your watchfolders"
+              : "Create a new preset to use in your watchfolders"
+          }}
         </p>
       </div>
       <hr class="border-primary-500" />
