@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import { ArrowUpIcon, PlusCircleIcon } from "@heroicons/vue/24/solid"
+import {
+  ArrowUpIcon,
+  PlusCircleIcon,
+  SparklesIcon,
+} from "@heroicons/vue/24/solid"
 import FormFieldText from "~/components/Form/FormFieldText.vue"
 import type {
   NewPreset,
@@ -10,6 +14,8 @@ const route = useRoute()
 
 const editPreset = ref<Preset | null>(null)
 const editPresetId = route.query["edit"] as string
+
+const aiStore = useAiStore()
 
 if (editPresetId) {
   await useFFMate()
@@ -199,16 +205,27 @@ const save = () => {
           </div>
 
           <div class="sm:col-span-full">
-            <FormFieldTextarea
-              v-model="form.command"
-              label="Command *"
-              placeholder="Enter command"
-              preventEnter
-              autoHeight
-              name="command"
-              id="command"
-              ariaLabel="preset command"
-            />
+            <div class="flex flex-row gap-x-2 items-stat">
+              <div class="w-full">
+                <FormFieldTextarea
+                  v-model="form.command"
+                  label="Command *"
+                  placeholder="Enter command"
+                  preventEnter
+                  autoHeight
+                  name="command"
+                  id="command"
+                  ariaLabel="preset command"
+                />
+              </div>
+              <button
+                v-if="aiStore.ai"
+                class="rounded-md bg-primary-500 size-8 mt-8 text-sm font-semibold text-white shadow-sm hover:bg-primary-600 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-primary-600 flex items-center justify-center cursor-pointer"
+                @click.prevent
+              >
+                <SparklesIcon class="white-white size-4" />
+              </button>
+            </div>
           </div>
 
           <div class="sm:col-span-full">
