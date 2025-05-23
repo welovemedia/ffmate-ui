@@ -5,6 +5,8 @@ const logStore = useLogStore()
 
 const route = useRoute()
 
+const updateStore = useUpdateStore()
+
 const isActive = (to: RouteLocationNamedRaw) => {
   return route.name?.toString().startsWith(to.name?.toString() ?? "")
 }
@@ -35,9 +37,22 @@ const menu = [
   <div
     class="fixed h-12 border-b border-gray-600 bg-[#1a1a1c] backdrop-blur-xl w-full flex flex-row justify-between items-center px-4 z-10"
   >
-    <div class="flex w-1/3 flex-row space-x-2 items-center">
+    <div class="flex w-1/3 flex-row gap-x-2 items-center">
       <img src="/icon_black.webp" class="h-6" />
       <img src="/logo.webp" class="h-6" />
+      <Transition
+        enter-from-class="translate-x-[50px] opacity-0"
+        enter-to-class="translate-x-0 opacity-100"
+        leave-from-class="translate-x-0 opacity-100"
+        leave-to-class="translate-x-[50px] opacity-0"
+      >
+        <div
+          v-if="updateStore.isUpdateAvailable"
+          class="flex items-end justify-end text-xs mt-2.5"
+        >
+          <span>Update available</span>
+        </div>
+      </Transition>
     </div>
 
     <div class="w-1/3 flex justify-center">

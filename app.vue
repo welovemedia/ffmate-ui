@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-const taskStore = useTaskStore();
-const presetStore = usePresetStore();
-const watchfolderStore = useWatchfolderStore();
+const taskStore = useTaskStore()
+const presetStore = usePresetStore()
+const watchfolderStore = useWatchfolderStore()
 
-const { perPage } = useConfig();
+const { perPage } = useConfig()
 
 onMounted(() => {
-  taskStore.load(0, perPage);
-  presetStore.load(0, perPage);
-  watchfolderStore.load(0, perPage);
-});
+  taskStore.load(0, perPage)
+  presetStore.load(0, perPage)
+  watchfolderStore.load(0, perPage)
+})
 </script>
 
 <template>

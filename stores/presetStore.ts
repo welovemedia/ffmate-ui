@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
-import type { Preset } from "~/sdk/ffmate/lib/interfaces/presets/preset";
-import type { WebsocketMessage } from "~/sdk/ffmate/lib/services/websocket";
+import { defineStore } from "pinia"
+import type { Preset } from "~/sdk/ffmate/lib/interfaces/presets/preset"
+import type { WebsocketMessage } from "~/sdk/ffmate/lib/services/websocket"
 
 const originalStore = defineStore("preset", {
   state: (): { presets: Preset[]; total: number } => {
@@ -17,6 +17,10 @@ const originalStore = defineStore("preset", {
       const { $ffmate } = useNuxtApp();
       const t = await $ffmate.Preset.getPresets(page, perPage);
       if (t) {
+        if (t.version) {
+          const updateStore = useUpdateStore();
+          updateStore.installedVersion = t.version
+        }
         this.presets = t.items;
         this.total = t.total;
       }
