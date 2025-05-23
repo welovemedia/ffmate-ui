@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import { ChevronRightIcon, PencilIcon, TrashIcon } from "@heroicons/vue/24/solid"
+import {
+  ChevronRightIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/vue/24/solid"
 import type { Watchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolders/watchfolder"
 
 const watchfolderStore = useWatchfolderStore()
@@ -107,11 +111,12 @@ const tableItems = computed(() => {
       <span
         v-if="cell.id === 'status'"
         :class="{
-          'text-red-500': cell.raw.error,
-          'text-green-500': !cell.raw.error,
+          '!text-yellow-500': cell.raw.suspended,
+          'text-red-500': cell.raw.error && !cell.raw.suspended,
+          'text-green-500': !cell.raw.error && !cell.raw.suspended,
         }"
       >
-        {{ cell.raw.error ?? "OK" }}
+        {{ cell.raw.suspended ? "PAUSED" : cell.raw.error ?? "OK" }}
       </span>
       <div
         v-if="cell.id === 'name'"

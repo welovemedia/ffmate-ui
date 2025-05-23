@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Switch } from "@headlessui/vue"
 import { ChevronDownIcon } from "@heroicons/vue/24/solid"
 import type {
   NewWatchfolder,
@@ -25,6 +26,7 @@ const form = reactive({
   preset: editWatchfolder.value?.preset ?? presetStore.presets[0]?.uuid,
   interval: editWatchfolder.value?.interval ?? 5,
   growthChecks: editWatchfolder.value?.growthChecks ?? 3,
+  suspended: editWatchfolder.value?.suspended ?? false,
   filterInclude:
     editWatchfolder.value?.filter?.extensions?.include?.join(",") ?? "",
   filterExclude:
@@ -39,6 +41,7 @@ const save = () => {
     growthChecks: form.growthChecks,
     preset: form.preset,
     path: form.path,
+    suspended: form.suspended,
     filter: {
       extensions: {
         include: [],
@@ -234,6 +237,73 @@ const save = () => {
                 id="filter exclude"
                 class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-primary-500 sm:text-sm/6"
               />
+            </div>
+          </div>
+          <div class="sm:col-span-6">
+            <div class="mt-2 flex items-center justify-end gap-x-4">
+              <Switch
+                v-model="form.suspended"
+                :class="[
+                  !form.suspended ? 'bg-indigo-600' : 'bg-gray-200',
+                  'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
+                ]"
+              >
+                <span class="sr-only">Enabled</span>
+                <span
+                  :class="[
+                    !form.suspended ? 'translate-x-5' : 'translate-x-0',
+                    'pointer-events-none relative inline-block size-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+                  ]"
+                >
+                  <span
+                    :class="[
+                      !form.suspended
+                        ? 'opacity-0 duration-100 ease-out'
+                        : 'opacity-100 duration-200 ease-in',
+                      'absolute inset-0 flex size-full items-center justify-center transition-opacity',
+                    ]"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      class="size-3 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 12 12"
+                    >
+                      <path
+                        d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    :class="[
+                      !form.suspended
+                        ? 'opacity-100 duration-200 ease-in'
+                        : 'opacity-0 duration-100 ease-out',
+                      'absolute inset-0 flex size-full items-center justify-center transition-opacity',
+                    ]"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      class="size-3 text-indigo-600"
+                      fill="currentColor"
+                      viewBox="0 0 12 12"
+                    >
+                      <path
+                        d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </Switch>
+              <label
+                for="filter include"
+                class="block text-sm/6 font-medium text-gray-200"
+                >Enabled</label
+              >
             </div>
           </div>
         </div>
