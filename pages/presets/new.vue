@@ -54,6 +54,7 @@ const form = reactive({
     scriptPath: editPreset.value?.postProcessing?.scriptPath ?? "",
     sidecarPath: editPreset.value?.postProcessing?.sidecarPath ?? "",
   },
+  globalPresetName: "",
 })
 
 const applyPreset = (preset: NewPreset) => {
@@ -66,6 +67,7 @@ const applyPreset = (preset: NewPreset) => {
   form.preProcessing.sidecarPath = preset.preProcessing?.sidecarPath ?? ""
   form.postProcessing.scriptPath = preset.postProcessing?.scriptPath ?? ""
   form.postProcessing.sidecarPath = preset.postProcessing?.sidecarPath ?? ""
+  form.globalPresetName = preset.name
 }
 
 const save = () => {
@@ -86,6 +88,7 @@ const save = () => {
       scriptPath: form.postProcessing.scriptPath,
       sidecarPath: form.postProcessing.sidecarPath,
     },
+    globalPresetName: form.globalPresetName,
   } as NewPreset
 
   if (editPreset.value) {

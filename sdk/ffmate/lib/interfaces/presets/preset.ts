@@ -31,6 +31,8 @@ export interface NewPreset {
 
   preProcessing?: PrePostProcessing;
   postProcessing?: PrePostProcessing;
+
+  globalPresetName?: string;
 }
 
 export interface PrePostProcessing {
