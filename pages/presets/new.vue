@@ -169,7 +169,7 @@ const save = () => {
     </div>
 
     <form
-      class="bg-gray-800 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
+      class="shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
       @submit.prevent="save"
     >
       <div class="px-4 py-6 sm:p-8">
@@ -277,14 +277,14 @@ const save = () => {
       >
         <button
           type="button"
-          class="text-sm/6 font-semibold text-gray-200"
-          @click="navigateTo({ name: 'watchfolders' })"
+          class="text-sm/6 font-semibold text-gray-200 cursor-pointer"
+          @click="navigateTo({ name: 'presets' })"
         >
           Cancel
         </button>
         <button
           type="submit"
-          class="rounded-md bg-primary-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+          class="rounded-md bg-primary-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 cursor-pointer"
         >
           {{ editPreset ? "Update" : "Create" }}
         </button>
