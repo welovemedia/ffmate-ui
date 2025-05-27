@@ -17,10 +17,6 @@ const originalStore = defineStore("preset", {
       const { $ffmate } = useNuxtApp();
       const t = await $ffmate.Preset.getPresets(page, perPage);
       if (t) {
-        if (t.version) {
-          const updateStore = useUpdateStore();
-          updateStore.installedVersion = t.version
-        }
         this.presets = t.items;
         this.total = t.total;
       }

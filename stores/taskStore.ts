@@ -26,11 +26,6 @@ const originalStore = defineStore("tasks", {
       const t = await useFFMate().Tasks.getTasks(page, perPage, status)
       this.loaded = true
       if (t) {
-        // Extract installed version from headers and set it in the update store
-        if (t.version) {
-          const updateStore = useUpdateStore()
-          updateStore.installedVersion = t.version
-        }
         this.tasks = t.items
         this.total = t.total
       }

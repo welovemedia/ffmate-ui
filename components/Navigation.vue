@@ -5,7 +5,7 @@ const logStore = useLogStore()
 
 const route = useRoute()
 
-const updateStore = useUpdateStore()
+const clientStore = useClientStore()
 
 const isActive = (to: RouteLocationNamedRaw) => {
   return route.name?.toString().startsWith(to.name?.toString() ?? "")
@@ -47,7 +47,7 @@ const menu = [
         leave-to-class="translate-x-[50px] opacity-0"
       >
         <div
-          v-if="updateStore.isUpdateAvailable"
+          v-if="clientStore.isUpdateAvailable"
           class="flex items-end justify-end text-xs mt-2.5"
         >
           <span>Update available</span>
