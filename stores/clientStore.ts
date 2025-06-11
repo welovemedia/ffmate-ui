@@ -1,6 +1,5 @@
 import axios from "axios"
 import { defineStore } from "pinia"
-import type { AI } from "~/sdk/ffmate/lib/interfaces/ai/ai"
 import type { Client } from "~/sdk/ffmate/lib/interfaces/client/client"
 
 interface Update {
@@ -11,10 +10,9 @@ interface Update {
 const originalStore = defineStore("client", {
   state: (): {
     client: Client | undefined
-    ai: AI | undefined
     newVersion: string | undefined
   } => {
-    return { client: undefined, ai: undefined, newVersion: undefined }
+    return { client: undefined, newVersion: undefined }
   },
   getters: {
     isUpdateAvailable: (state) => {
@@ -29,14 +27,6 @@ const originalStore = defineStore("client", {
       const c = await useFFMate().Client.getClient()
       if (c) {
         this.client = c
-      }
-    },
-    async loadAI() {
-      const a = await useFFMate()
-        .AI.getAI()
-        .catch(() => {})
-      if (a) {
-        this.ai = a
       }
     },
     async useCheckForUpdates() {
@@ -59,7 +49,6 @@ export const useClientStore = (): ReturnType<typeof originalStore> => {
     store.value = originalStore()
 
     store.value.loadClient()
-    store.value.loadAI()
 
     useIntervalFn(() => {
       store.value!.useCheckForUpdates()
