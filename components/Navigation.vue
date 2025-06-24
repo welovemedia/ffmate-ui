@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ArrowTopRightOnSquareIcon } from "@heroicons/vue/24/solid"
 import type { RouteLocationNamedRaw } from "vue-router"
 
 const logStore = useLogStore()
@@ -51,6 +52,26 @@ const menu = [
           class="flex items-end justify-end text-xs mt-2.5"
         >
           <span>Update available</span>
+        </div>
+      </Transition>
+      <Transition
+        enter-from-class="translate-x-[50px] opacity-0"
+        enter-to-class="translate-x-0 opacity-100"
+        leave-from-class="translate-x-0 opacity-100"
+        leave-to-class="translate-x-[50px] opacity-0"
+      >
+        <div
+          v-if="!clientStore.isFfmpegFound"
+          class="flex items-end justify-end text-xs mt-2.5"
+        >
+          <span v-if="clientStore.isUpdateAvailable" class="mr-2">|</span>
+          <a
+            href="https://docs.ffmate.io/docs/getting-started#Installing-ffmpeg"
+            target="_blank"
+            class="flex flex-row gap-x-2 items-center text-red-500"
+            ><span>FFmpeg not found </span
+            ><ArrowTopRightOnSquareIcon class="size-3"
+          /></a>
         </div>
       </Transition>
     </div>

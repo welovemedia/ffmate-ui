@@ -21,6 +21,9 @@ const originalStore = defineStore("client", {
       }
       return state.newVersion !== state.client?.version
     },
+    isFfmpegFound: (state) => {
+      return state.client?.ffmpeg.length !== 0
+    },
   },
   actions: {
     async loadClient() {
