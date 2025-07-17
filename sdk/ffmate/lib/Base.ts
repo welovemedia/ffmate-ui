@@ -11,7 +11,7 @@ export default abstract class Base {
     this.options = options;
     this.server =
       process.env.NODE_ENV === "production"
-        ? `http://${self.location.host}`
+        ? `${self.location.protocol}//${self.location.host}`
         : `http://localhost:3000`;
     this.axios = axios;
   }
