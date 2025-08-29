@@ -6,6 +6,7 @@ import ClientService from "./services/client/client"
 import PresetService from "./services/preset"
 import TaskService from "./services/task"
 import WatchfolderService from "./services/watchfolder"
+import WebhookService from "./services/webhook"
 import WebsocketService from "./services/websocket"
 
 const VERSION = "0.0.1";
@@ -16,6 +17,7 @@ export default class SevWtf {
   private axios: AxiosInstance;
   public Tasks: TaskService;
   public Watchfolder: WatchfolderService;
+  public Webhook: WebhookService;
   public Preset: PresetService;
   public Client: ClientService;
   public Websocket: WebsocketService;
@@ -37,6 +39,7 @@ export default class SevWtf {
 
     this.Tasks = new TaskService(this.options, this.axios);
     this.Watchfolder = new WatchfolderService(this.options, this.axios);
+    this.Webhook = new WebhookService(this.options, this.axios);
     this.Preset = new PresetService(this.options, this.axios);
     this.Client = new ClientService(this.options, this.axios);
     this.Websocket = new WebsocketService(this.options, this.axios);

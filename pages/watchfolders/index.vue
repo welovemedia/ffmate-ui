@@ -34,12 +34,12 @@ const deleteWatchfolder = (watchfolder: Watchfolder) => {
   })
 }
 
-const presets = computed(() => {
+const watchfolders = computed(() => {
   return watchfolderStore.watchfolders
 })
 
 const tableItems = computed(() => {
-  return presets.value.map((t: Watchfolder) => {
+  return watchfolders.value.map((t: Watchfolder) => {
     const cells = [
       {
         label: t.name,

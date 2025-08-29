@@ -3,6 +3,7 @@ import Base, { type Options } from "../Base"
 import type { Preset } from "../interfaces/presets/preset"
 import type { Task } from "../interfaces/tasks/task"
 import type { Watchfolder } from "../interfaces/watchfolders/watchfolder"
+import type { Webhook } from "../interfaces/webhooks/webhook"
 
 export type CallbackEvent = {
   id?: string;
@@ -13,7 +14,7 @@ export type CallbackEvent = {
 
 export interface WebsocketMessage {
   subject: string;
-  payload: Task | Preset | Watchfolder | string;
+  payload: Task | Preset | Watchfolder | Webhook | string;
 }
 
 export default class WebsocketService extends Base {

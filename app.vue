@@ -2,6 +2,7 @@
 const taskStore = useTaskStore()
 const presetStore = usePresetStore()
 const watchfolderStore = useWatchfolderStore()
+const webhookStore = useWebhookStore()
 
 const { perPage } = useConfig()
 
@@ -9,6 +10,7 @@ onMounted(() => {
   taskStore.load(0, perPage)
   presetStore.load(0, perPage)
   watchfolderStore.load(0, perPage)
+  webhookStore.load(0, perPage)
 })
 </script>
 

@@ -14,8 +14,8 @@ const editWatchfolderId = route.query["edit"] as string
 if (editWatchfolderId) {
   await useFFMate()
     .Watchfolder.getWatchfolder(editWatchfolderId)
-    .then((preset) => {
-      editWatchfolder.value = preset
+    .then((wf) => {
+      editWatchfolder.value = wf
     })
 }
 
