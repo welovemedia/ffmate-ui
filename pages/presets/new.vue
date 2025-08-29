@@ -1,29 +1,29 @@
 <script lang="ts" setup>
-import { ArrowUpIcon, PlusCircleIcon } from "@heroicons/vue/24/solid";
-import FormFieldText from "~/components/Form/FormFieldText.vue";
+import { ArrowUpIcon, PlusCircleIcon } from "@heroicons/vue/24/solid"
+import FormFieldText from "~/components/Form/FormFieldText.vue"
 import type {
   NewPreset,
   Preset,
-} from "~/sdk/ffmate/lib/interfaces/presets/preset";
+} from "~/sdk/ffmate/lib/interfaces/presets/preset"
 
-const route = useRoute();
+const route = useRoute()
 
-const editPreset = ref<Preset | null>(null);
-const editPresetId = route.query["edit"] as string;
-const clientStore = await useClientStore();
+const editPreset = ref<Preset | null>(null)
+const editPresetId = route.query["edit"] as string
+const clientStore = await useClientStore()
 
 if (editPresetId) {
   await useFFMate()
     .Preset.getPreset(editPresetId)
     .then((preset) => {
-      editPreset.value = preset;
-    });
+      editPreset.value = preset
+    })
 }
 
-const globalPreset = await useFFMate().Preset.getGlobalPresets();
+const globalPreset = await useFFMate().Preset.getGlobalPresets()
 const globalPresetFiltered = computed(() => {
   return globalPreset.filter((p) => {
-    const s = search.value.toLowerCase();
+    const s = search.value.toLowerCase()
     const t = [
       p.name,
       p.description,
@@ -33,13 +33,13 @@ const globalPresetFiltered = computed(() => {
       p.preProcessing?.scriptPath,
       p.postProcessing?.scriptPath,
       p.postProcessing?.scriptPath,
-    ];
+    ]
 
-    return t.some((v) => v?.toLowerCase().includes(s));
-  });
-});
+    return t.some((v) => v?.toLowerCase().includes(s))
+  })
+})
 
-const search = ref("");
+const search = ref("")
 
 const form = reactive({
   name: editPreset.value?.name ?? "",
@@ -50,31 +50,34 @@ const form = reactive({
   preProcessing: {
     scriptPath: editPreset.value?.preProcessing?.scriptPath ?? "",
     sidecarPath: editPreset.value?.preProcessing?.sidecarPath ?? "",
+    importSidecar: editPreset.value?.preProcessing?.importSidecar ?? false,
   },
   postProcessing: {
     scriptPath: editPreset.value?.postProcessing?.scriptPath ?? "",
     sidecarPath: editPreset.value?.postProcessing?.sidecarPath ?? "",
   },
   globalPresetName: "",
-});
+})
 
 const applyPreset = (preset: NewPreset) => {
-  form.name = preset.name;
-  form.description = preset.description;
-  form.command = preset.command;
-  form.priority = preset.priority ?? 0;
+  form.name = preset.name
+  form.description = preset.description
+  form.command = preset.command
+  form.priority = preset.priority ?? 0
   if (preset.outputFile) {
     form.outputFile =
       clientStore.client?.os === "windows"
         ? preset.outputFile.replaceAll(/\//g, "\\") // Normalize Windows paths
-        : preset.outputFile;
+        : preset.outputFile
   }
-  form.preProcessing.scriptPath = preset.preProcessing?.scriptPath ?? "";
-  form.preProcessing.sidecarPath = preset.preProcessing?.sidecarPath ?? "";
-  form.postProcessing.scriptPath = preset.postProcessing?.scriptPath ?? "";
-  form.postProcessing.sidecarPath = preset.postProcessing?.sidecarPath ?? "";
-  form.globalPresetName = preset.name;
-};
+  form.preProcessing.scriptPath = preset.preProcessing?.scriptPath ?? ""
+  form.preProcessing.sidecarPath = preset.preProcessing?.sidecarPath ?? ""
+  form.preProcessing.importSidecar =
+    preset.preProcessing?.importSidecar ?? false
+  form.postProcessing.scriptPath = preset.postProcessing?.scriptPath ?? ""
+  form.postProcessing.sidecarPath = preset.postProcessing?.sidecarPath ?? ""
+  form.globalPresetName = preset.name
+}
 
 const save = () => {
   const n = {
@@ -89,28 +92,29 @@ const save = () => {
     preProcessing: {
       scriptPath: form.preProcessing.scriptPath,
       sidecarPath: form.preProcessing.sidecarPath,
+      importSidecar: form.preProcessing.importSidecar,
     },
     postProcessing: {
       scriptPath: form.postProcessing.scriptPath,
       sidecarPath: form.postProcessing.sidecarPath,
     },
     globalPresetName: form.globalPresetName,
-  } as NewPreset;
+  } as NewPreset
 
   if (editPreset.value) {
     useFFMate()
       .Preset.update(editPreset.value.uuid, n)
       .then(() => {
-        navigateTo({ name: "presets" });
-      });
+        navigateTo({ name: "presets" })
+      })
   } else {
     useFFMate()
       .Preset.create(n)
       .then(() => {
-        navigateTo({ name: "presets" });
-      });
+        navigateTo({ name: "presets" })
+      })
   }
-};
+}
 </script>
 
 <template>
@@ -257,6 +261,17 @@ const save = () => {
               label="PreProcessing scriptPath"
               placeholder="Script path"
               ariaLabel="preset preProcessing scriptPath"
+            />
+          </div>
+          <div class="sm:col-span-6 text-right">
+            <FormSwitch
+              label="Import sidecar"
+              :modelValue="form.preProcessing.importSidecar"
+              @update:modelValue="(e: boolean) => {
+                  console.log('yo', e)
+                  form.preProcessing.importSidecar = e
+                }
+              "
             />
           </div>
 

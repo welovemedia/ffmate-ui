@@ -1,41 +1,43 @@
 interface PrePostProcessingReduced {
-  scriptPath?: string;
-  sidecarPath?: string;
+  scriptPath?: string
+  sidecarPath?: string
+  importSidecar?: boolean
 }
 
 export interface Preset {
-  uuid: string;
+  uuid: string
 
-  name?: string;
-  description?: string;
+  name?: string
+  description?: string
 
-  command?: string;
-  outputFile?: string;
+  command?: string
+  outputFile?: string
 
-  priority: number;
+  priority: number
 
-  createdAt: number;
-  updatedAt: number;
+  createdAt: number
+  updatedAt: number
 
-  preProcessing?: PrePostProcessingReduced;
-  postProcessing?: PrePostProcessingReduced;
+  preProcessing?: PrePostProcessingReduced
+  postProcessing?: PrePostProcessingReduced
 }
 
 export interface NewPreset {
-  name: string;
-  description: string;
+  name: string
+  description: string
 
-  command: string;
-  priority: number;
-  outputFile: string;
+  command: string
+  priority: number
+  outputFile: string
 
-  preProcessing?: PrePostProcessing;
-  postProcessing?: PrePostProcessing;
+  preProcessing?: PrePostProcessing
+  postProcessing?: PrePostProcessing
 
-  globalPresetName?: string;
+  globalPresetName?: string
 }
 
 export interface PrePostProcessing {
-  scriptPath?: string;
-  sidecarPath?: string;
+  scriptPath?: string
+  sidecarPath?: string
+  importSidecar?: boolean
 }
