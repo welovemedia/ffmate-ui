@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import {
-    ChevronRightIcon,
-    PencilIcon,
-    TrashIcon,
+  ArrowTopRightOnSquareIcon,
+  ChevronRightIcon,
+  PencilIcon,
+  TrashIcon,
 } from "@heroicons/vue/24/solid"
 import type { Webhook } from "~/sdk/ffmate/lib/interfaces/webhooks/webhook"
 
 const webhookStore = useWebhookStore()
-const presetStore = usePresetStore()
 const { perPage } = useConfig()
 const page = ref(0)
 
@@ -53,7 +53,7 @@ const tableItems = computed(() => {
         label: useTimeAgo(new Date(t.updatedAt)).value,
         id: "updatedAt",
       },
-      { label: "", id: "chevron" },
+      { label: "" },
     ]
 
     return {
@@ -86,9 +86,15 @@ const tableItems = computed(() => {
       />
     </template>
     <template #cell.label="{ cell, hoveredRow }">
-      <NuxtLink v-if="cell.id === 'url'" :to="cell.raw.url" target="_blank">{{
-        cell.raw.url
-      }}</NuxtLink>
+      <NuxtLink
+        v-if="cell.id === 'url'"
+        :to="cell.raw.url"
+        target="_blank"
+        class="flex gap-x-2 items-center group"
+        ><span>{{ cell.raw.url }}</span>
+        <ArrowTopRightOnSquareIcon
+          class="size-3 opacity-0 group-hover:opacity-100 transition-opacity duration-100"
+      /></NuxtLink>
       <div
         v-if="cell.id === 'chevron'"
         class="flex flex-row space-x-2 justify-end w-full"

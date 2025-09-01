@@ -37,6 +37,12 @@ const menu = [
       name: "webhooks",
     } as RouteLocationNamedRaw,
   },
+  {
+    label: "Executions",
+    to: {
+      name: "executions",
+    } as RouteLocationNamedRaw,
+  },
 ]
 </script>
 

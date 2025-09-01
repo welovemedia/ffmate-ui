@@ -29,6 +29,27 @@ export interface Webhook {
   updatedAt: number
 }
 
+export interface WebhookExecution {
+  uuid: string
+
+  event: WebhookEvent
+  url: string
+
+  request: {
+    headers: Record<string, string[]>
+    body: string
+  }
+
+  response: {
+    status: number
+    headers: Record<string, string[]>
+    body: string
+  }
+
+  createdAt: number
+  updatedAt: number
+}
+
 export interface NewWebhook {
   event: WebhookEvent
   url: string
