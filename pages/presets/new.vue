@@ -1,10 +1,19 @@
 <script lang="ts" setup>
-import { ArrowUpIcon, PlusCircleIcon } from "@heroicons/vue/24/solid"
+import {
+  ArrowUpIcon,
+  ChevronDownIcon,
+  PlusCircleIcon,
+  TrashIcon,
+} from "@heroicons/vue/24/solid"
 import FormFieldText from "~/components/Form/FormFieldText.vue"
 import type {
   NewPreset,
   Preset,
 } from "~/sdk/ffmate/lib/interfaces/presets/preset"
+import {
+  WebhookEvent,
+  type NewWebhook,
+} from "~/sdk/ffmate/lib/interfaces/webhooks/webhook"
 
 const route = useRoute()
 
@@ -20,6 +29,7 @@ if (editPresetId) {
     })
 }
 
+const expandWebhooks = ref<boolean>(false)
 const globalPreset = await useFFMate().Preset.getGlobalPresets()
 const globalPresetFiltered = computed(() => {
   return globalPreset.filter((p) => {
@@ -56,6 +66,7 @@ const form = reactive({
     scriptPath: editPreset.value?.postProcessing?.scriptPath ?? "",
     sidecarPath: editPreset.value?.postProcessing?.sidecarPath ?? "",
   },
+  webhooks: editPreset.value?.webhooks ?? ([] as NewWebhook[]),
   globalPresetName: "",
 })
 
@@ -98,6 +109,7 @@ const save = () => {
       scriptPath: form.postProcessing.scriptPath,
       sidecarPath: form.postProcessing.sidecarPath,
     },
+    webhooks: form.webhooks,
     globalPresetName: form.globalPresetName,
   } as NewPreset
 
@@ -291,6 +303,70 @@ const save = () => {
               ariaLabel="preset postProcessing scriptPath"
             />
           </div>
+
+          <Divider class="col-span-full" />
+
+          <div class="sm:col-span-full">
+            <h4 class="text-sm">Webhooks</h4>
+            <ul class="flex flex-col gap-y-6">
+              <li
+                v-for="(webhook, index) in form.webhooks"
+                class="flex gap-x-6 justify-between w-full"
+              >
+                <div class="w-1/2">
+                  <div class="sm:col-span-full">
+                    <div>
+                      <label
+                        for="location"
+                        class="block text-sm/6 font-medium text-white"
+                        >Preset *</label
+                      >
+                      <div class="mt-2 grid grid-cols-1">
+                        <select
+                          id="preset"
+                          name="preset"
+                          class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-700 py-1.5 pl-3 pr-8 text-base text-gray-300 outline-1 outline-gray-600 -outline-offset- focus:outline-2 focus:-outline-offset-2 focus:outline-primary-500 sm:text-sm/6"
+                          v-model="form.webhooks[index].event"
+                        >
+                          >
+                          <option v-for="event in WebhookEvent" :value="event">
+                            {{ event }}
+                          </option>
+                        </select>
+                        <ChevronDownIcon
+                          class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
+                          aria-hidden="true"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-1/2 flex gap-x-2 items-end">
+                  <FormFieldText
+                    v-model="form.webhooks[index].url"
+                    label="Url"
+                    class="w-full"
+                    placeholder="Url"
+                    ariaLabel="webhook url"
+                  />
+                  <TrashIcon
+                    class="size-4 mb-3 text-gray-400 hover:text-gray-300 cursor-pointer"
+                    @click="form.webhooks.splice(index, 1)"
+                  />
+                </div>
+              </li>
+            </ul>
+            <Button
+              class="w-full mt-4"
+              @click.stop="
+                form.webhooks.push({
+                  event: WebhookEvent.TASK_CREATED,
+                  url: '',
+                } as NewWebhook)
+              "
+              >+ webhook</Button
+            >
+          </div>
         </div>
       </div>
       <div
@@ -305,7 +381,7 @@ const save = () => {
         </button>
         <button
           type="submit"
-          class="rounded-md bg-primary-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 cursor-pointer"
+          class="rounded-md bg-primary-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 cursor-pointer"
         >
           {{ editPreset ? "Update" : "Create" }}
         </button>

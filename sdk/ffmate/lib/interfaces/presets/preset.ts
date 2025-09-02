@@ -1,3 +1,5 @@
+import type { NewWebhook } from "../webhooks/webhook"
+
 interface PrePostProcessingReduced {
   scriptPath?: string
   sidecarPath?: string
@@ -11,9 +13,10 @@ export interface Preset {
   description?: string
 
   command?: string
+  priority: number
   outputFile?: string
 
-  priority: number
+  webhooks?: NewWebhook[]
 
   createdAt: number
   updatedAt: number
@@ -29,6 +32,8 @@ export interface NewPreset {
   command: string
   priority: number
   outputFile: string
+
+  webhooks?: NewWebhook[]
 
   preProcessing?: PrePostProcessing
   postProcessing?: PrePostProcessing
