@@ -89,13 +89,11 @@ const save = () => {
         </div>
 
         <form
-            class="shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
+            class="md:col-span-2 rounded-lg bg-white/2"
             @submit.prevent="save"
         >
             <div class="px-4 py-6 sm:p-8">
-                <div
-                    class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
-                >
+                <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="sm:col-span-full">
                         <label
                             for="first-name"

@@ -3,6 +3,7 @@ useCurrentPage().setCurrent("Settings");
 
 const settingsStore = useSettingsStore();
 const form = reactive({
+    enabled: settingsStore.settings.ai?.enabled || false,
     apiKey: settingsStore.settings.ai?.apiKey || "",
     model: settingsStore.settings.ai?.model || "gpt-4",
 });
@@ -12,12 +13,18 @@ const form = reactive({
     <Setting description="Setup AI to be used throughout ffmate">
         <template #default>
             <form class="flex flex-col gap-y-4">
+                <FormSwitch
+                    v-model="form.enabled"
+                    label="Enabled"
+                    type="text"
+                    ariaLabel="open-ai enabled"
+                />
                 <FormFieldText
                     v-model="form.apiKey"
                     label="API Key *"
                     type="text"
                     placeholder="sk-xxxx"
-                    ariaLabel="open ai apiKey"
+                    ariaLabel="open-ai apiKey"
                 />
                 <FormFieldSelect
                     v-model="form.model"
@@ -47,6 +54,7 @@ const form = reactive({
                                 settingsStore
                                     .setSettings({
                                         ai: {
+                                            enabled: form.enabled,
                                             apiKey: form.apiKey,
                                             model: form.model,
                                         },

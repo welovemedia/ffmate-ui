@@ -28,7 +28,6 @@ if (editPresetId) {
         });
 }
 
-const expandWebhooks = ref<boolean>(false);
 const globalPreset = await useFFMate().Preset.getGlobalPresets();
 const globalPresetFiltered = computed(() => {
     return globalPreset.filter((p) => {
@@ -163,7 +162,7 @@ const save = () => {
                     :key="preset.name"
                 >
                     <li
-                        class="py-2 flex flex-row gap-x-2 items-center justify-between hover:bg-gray-700 rounded-lg px-2 transition-all cursor-pointer group"
+                        class="py-2 flex flex-row gap-x-2 items-center justify-between hover:bg-white/10 rounded-lg px-2 transition-all cursor-pointer group"
                         @click="applyPreset(preset)"
                     >
                         <div class="flex flex-row space-x-2 items-center">
@@ -192,13 +191,11 @@ const save = () => {
         </div>
 
         <form
-            class="shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
+            class="md:col-span-2 rounded-lg bg-white/2"
             @submit.prevent="save"
         >
             <div class="px-4 py-6 sm:p-8">
-                <div
-                    class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
-                >
+                <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="sm:col-span-full">
                         <FormFieldText
                             v-model="form.name"
@@ -317,13 +314,12 @@ const save = () => {
                         <ul class="flex flex-col gap-y-6">
                             <li
                                 v-for="(webhook, index) in form.webhooks"
+                                :key="webhook"
                                 class="flex gap-x-6 justify-between w-full"
                             >
                                 <div class="w-1/2">
                                     <div class="sm:col-span-full">
                                         <FormFieldSelect
-                                            id="preset"
-                                            name="preset"
                                             label="Event *"
                                             :options="
                                                 Object.values(WebhookEvent).map(
@@ -333,9 +329,7 @@ const save = () => {
                                                     }),
                                                 )
                                             "
-                                            v-model="
-                                                form.webhooks[index]!.event
-                                            "
+                                            v-model="webhook.event"
                                         />
                                     </div>
                                 </div>

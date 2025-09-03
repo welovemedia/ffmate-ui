@@ -16,9 +16,11 @@ const active = ref<string>(props.tabs[0]?.id ?? "");
             <li
                 v-for="tab in tabs"
                 :key="tab.id"
+                class="cursor-pointer px-3 py-1 border-b-1 border-transparent -mb-[1px]"
+                :class="{
+                    'font-semibold !border-primary-500': active === tab.id,
+                }"
                 @click="active = tab.id"
-                class="cursor-pointer px-3 py-1 border-b-1 border-primary-500 -mb-[1px]"
-                :class="{ 'font-semibold': active === tab.id }"
             >
                 {{ tab.label }}
             </li>

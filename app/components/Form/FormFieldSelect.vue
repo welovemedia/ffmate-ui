@@ -13,7 +13,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const emit = defineEmits(["update:modelValue"]);
-const value = useState<string>("preset", () => props.modelValue);
+const value = ref(props.modelValue);
 watch(value, () => {
     emit("update:modelValue", value.value);
 });
