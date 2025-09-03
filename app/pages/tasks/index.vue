@@ -23,10 +23,17 @@ watch(page, () => {
 const selectedItems = ref<string[]>([])
 
 const showFilter = ref(false)
-const activeFilter = ref<string | undefined>(undefined)
+const activeFilter = ref<string>("ALL")
 watch(activeFilter, async () => {
   page.value = 0
-  await taskStore.load(page.value, perPage, activeFilter.value)
+  if (activeFilter.value == "ALL") {
+    showFilter.value = false
+  }
+  await taskStore.load(
+    page.value,
+    perPage,
+    activeFilter.value === "ALL" ? undefined : activeFilter.value
+  )
   window.scrollTo({ top: 0, behavior: "smooth" })
 })
 
@@ -125,7 +132,7 @@ const tableItems = computed(() => {
             >or
             <span
               class="text-primary-400 hover:text-primary-300 cursor-pointer"
-              @click="activeFilter = undefined"
+              @click="activeFilter = 'ALL'"
               >reset</span
             >
             the filter</template
@@ -164,26 +171,20 @@ const tableItems = computed(() => {
           v-if="header.label === 'Status' && showFilter"
           class="flex flex-row space-x-2 items-center"
         >
-          <select
-            class="h-6 bg-black py-0 my-0 text-xs rounded-lg"
-            @change="(event: any) => {
-            activeFilter = event.target.value === 'ALL' ? undefined : event.target.value
-            showFilter = false
-          }"
-          >
-            <option :selected="!activeFilter">ALL</option>
-            <option :selected="activeFilter === 'QUEUED'">QUEUED</option>
-            <option :selected="activeFilter === 'RUNNING'">RUNNING</option>
-            <option :selected="activeFilter === 'DONE_SUCCESSFUL'">
-              DONE_SUCCESSFUL
-            </option>
-            <option :selected="activeFilter === 'DONE_ERROR'">
-              DONE_ERROR
-            </option>
-            <option :selected="activeFilter === 'DONE_CANCELED'">
-              DONE_CANCELED
-            </option>
-          </select>
+          <FormFieldSelect
+            id="preset"
+            name="preset"
+            size="xs"
+            :options="[
+              { key: 'ALL', label: 'All' },
+              { key: 'QUEUED', label: 'Queued' },
+              { key: 'RUNNING', label: 'Running' },
+              { key: 'DONE_SUCCESSFUL', label: 'Successful' },
+              { key: 'DONE_ERROR', label: 'Error' },
+              { key: 'DONE_CANCELED', label: 'Canceled' },
+            ]"
+            v-model="activeFilter!"
+          />
         </div>
         <Pagination
           v-if="header.label === 'pagination'"

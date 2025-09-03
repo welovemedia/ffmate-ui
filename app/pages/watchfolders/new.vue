@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ChevronDownIcon } from "@heroicons/vue/24/solid"
 import type {
   NewWatchfolder,
   Watchfolder,
@@ -153,22 +152,16 @@ const save = () => {
                 >Preset *</label
               >
               <div class="mt-2 grid grid-cols-1">
-                <select
+                <FormFieldSelect
                   id="preset"
                   name="preset"
-                  class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white/5 py-1.5 pl-3 pr-8 text-base text-gray-300 outline-1 outline-gray-600 -outline-offset- focus:outline-2 focus:-outline-offset-2 focus:outline-primary-500 sm:text-sm/6"
-                  v-model="form.preset"
-                >
-                  <option
-                    v-for="preset in presetStore.presets"
-                    :value="preset.uuid"
-                  >
-                    {{ preset.name }}
-                  </option>
-                </select>
-                <ChevronDownIcon
-                  class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
-                  aria-hidden="true"
+                  :options="
+                    Object.values(presetStore.presets).map((e) => ({
+                      label: e.name ?? 'unnamed',
+                      key: e.uuid,
+                    }))
+                  "
+                  v-model="form.preset!"
                 />
               </div>
             </div>

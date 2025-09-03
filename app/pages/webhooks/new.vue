@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ChevronDownIcon } from "@heroicons/vue/24/solid"
 import {
   WebhookEvent,
   type NewWebhook,
@@ -11,18 +10,20 @@ const route = useRoute()
 const editWebhook = ref<Webhook | null>(null)
 const editwebhookId = route.query["edit"] as string
 useCurrentPage().setCurrent(editwebhookId ? "Edit webhook" : "New webhook")
-if (editwebhookId) {
-  await useFFMate()
-    .Webhook.getWebhook(editwebhookId)
-    .then((w) => {
-      editWebhook.value = w
-    })
-}
 
 const form = reactive({
   event: editWebhook.value?.event ?? WebhookEvent.TASK_CREATED,
   url: editWebhook.value?.url ?? "",
 })
+if (editwebhookId) {
+  await useFFMate()
+    .Webhook.getWebhook(editwebhookId)
+    .then((w) => {
+      form.event = w.event
+      form.url = w.url
+      editWebhook.value = w
+    })
+}
 
 const save = () => {
   const n = {
@@ -75,19 +76,16 @@ const save = () => {
                 >Preset *</label
               >
               <div class="mt-2 grid grid-cols-1">
-                <select
+                <FormFieldSelect
                   id="preset"
                   name="preset"
-                  class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white/5 py-1.5 pl-3 pr-8 text-base text-gray-300 outline-1 outline-gray-600 -outline-offset- focus:outline-2 focus:-outline-offset-2 focus:outline-primary-500 sm:text-sm/6"
+                  :options="
+                    Object.values(WebhookEvent).map((e) => ({
+                      label: e,
+                      key: e,
+                    }))
+                  "
                   v-model="form.event"
-                >
-                  <option v-for="event in WebhookEvent" :value="event">
-                    {{ event }}
-                  </option>
-                </select>
-                <ChevronDownIcon
-                  class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
-                  aria-hidden="true"
                 />
               </div>
             </div>

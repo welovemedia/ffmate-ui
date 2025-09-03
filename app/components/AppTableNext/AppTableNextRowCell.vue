@@ -30,7 +30,7 @@ const resolvedNuxtLink = resolveComponent("NuxtLink")
     :target="cell.to?.external ? '_blank' : undefined"
   >
     <div
-      class="flex h-14 grow flex-row items-center space-x-2 px-3"
+      class="flex h-14 grow flex-row items-center space-x-2 px-3 transition-colors duration-100"
       :class="[
         rowClass,
         {
