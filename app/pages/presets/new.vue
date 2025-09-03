@@ -314,7 +314,7 @@ const save = () => {
                         <ul class="flex flex-col gap-y-6">
                             <li
                                 v-for="(webhook, index) in form.webhooks"
-                                :key="webhook"
+                                :key="index"
                                 class="flex gap-x-6 justify-between w-full"
                             >
                                 <div class="w-1/2">
@@ -322,12 +322,20 @@ const save = () => {
                                         <FormFieldSelect
                                             label="Event *"
                                             :options="
-                                                Object.values(WebhookEvent).map(
-                                                    (e) => ({
+                                                Object.values(WebhookEvent)
+                                                    .filter(
+                                                        (w) =>
+                                                            w.startsWith(
+                                                                'preset.',
+                                                            ) ||
+                                                            w.startsWith(
+                                                                'task.',
+                                                            ),
+                                                    )
+                                                    .map((e) => ({
                                                         label: e,
                                                         key: e,
-                                                    }),
-                                                )
+                                                    }))
                                             "
                                             v-model="webhook.event"
                                         />
