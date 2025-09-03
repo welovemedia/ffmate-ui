@@ -140,8 +140,8 @@ defineProps<Props>();
                     ></dd>
 
                     <template
-                        v-for="webhook in preset.webhooks"
-                        :key="webhook.id"
+                        v-for="(webhook, index) in preset.webhooks"
+                        :key="index"
                     >
                         <dt class="text-sm/6 font-medium text-white ml-2">
                             {{ webhook.event }}

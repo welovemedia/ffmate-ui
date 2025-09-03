@@ -1,12 +1,14 @@
+import type { NewWebhook } from "../webhooks/webhook";
+
 export interface Task {
-  uuid: string
-  name?: string
+  uuid: string;
+  name?: string;
 
-  batch?: string
+  batch?: string;
 
-  command: RawResolved
-  inputFile: RawResolved
-  outputFile: RawResolved
+  command: RawResolved;
+  inputFile: RawResolved;
+  outputFile: RawResolved;
 
   status:
     | "QUEUED"
@@ -16,37 +18,39 @@ export interface Task {
     | "DONE_CANCELED"
     | "PRE_PROCESSING"
     | "POST_PROCESSING"
-    | ""
-  progress: number
-  remaining: number
-  lastRemaining: number
+    | "";
+  progress: number;
+  remaining: number;
+  lastRemaining: number;
 
-  error?: string
+  error?: string;
 
-  priority: number
+  priority: number;
 
-  source: "watchfolder" | "api"
+  webhooks?: NewWebhook[];
 
-  startedAt?: number
-  finishedAt?: number
+  source: "watchfolder" | "api";
 
-  createdAt: number
-  updatedAt: number
+  startedAt?: number;
+  finishedAt?: number;
 
-  preProcessing?: PrePostProcessing
+  createdAt: number;
+  updatedAt: number;
 
-  postProcessing?: PrePostProcessing
+  preProcessing?: PrePostProcessing;
+
+  postProcessing?: PrePostProcessing;
 }
 
 interface PrePostProcessing {
-  scriptPath?: RawResolved
-  sidecarPath?: RawResolved
-  error?: string
-  startedAt?: number
-  finishedAt?: number
+  scriptPath?: RawResolved;
+  sidecarPath?: RawResolved;
+  error?: string;
+  startedAt?: number;
+  finishedAt?: number;
 }
 
 interface RawResolved {
-  raw: string
-  resolved?: string
+  raw: string;
+  resolved?: string;
 }

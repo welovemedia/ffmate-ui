@@ -504,6 +504,29 @@ defineProps<Props>();
                         </template>
                     </template>
                 </div>
+                <div
+                    v-if="task.webhooks"
+                    class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                >
+                    <dt class="text-sm font-medium text-white">Webhooks</dt>
+                    <dd
+                        class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0"
+                    ></dd>
+
+                    <template
+                        v-for="(webhook, index) in task.webhooks"
+                        :key="index"
+                    >
+                        <dt class="text-sm/6 font-medium text-white ml-2">
+                            {{ webhook.event }}
+                        </dt>
+                        <dd
+                            class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0"
+                        >
+                            {{ webhook.url }}
+                        </dd>
+                    </template>
+                </div>
             </dl>
         </div>
     </div>
