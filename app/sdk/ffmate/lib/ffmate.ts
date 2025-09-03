@@ -1,13 +1,14 @@
-import axios, { type AxiosInstance } from "axios"
-import type { Options } from "./Base"
-import wrapException from "./helper/ErrorHelper"
-import { disableCacheHeaders } from "./interfaces/axios"
-import ClientService from "./services/client/client"
-import PresetService from "./services/preset"
-import TaskService from "./services/task"
-import WatchfolderService from "./services/watchfolder"
-import WebhookService from "./services/webhook"
-import WebsocketService from "./services/websocket"
+import axios, { type AxiosInstance } from "axios";
+import type { Options } from "./Base";
+import wrapException from "./helper/ErrorHelper";
+import { disableCacheHeaders } from "./interfaces/axios";
+import ClientService from "./services/client/client";
+import PresetService from "./services/preset";
+import TaskService from "./services/task";
+import WatchfolderService from "./services/watchfolder";
+import WebhookService from "./services/webhook";
+import WebsocketService from "./services/websocket";
+import SettingsService from "./services/settings";
 
 const VERSION = "0.0.1";
 const DEFAULT_OPTIONS: Options = {};
@@ -21,6 +22,7 @@ export default class SevWtf {
   public Preset: PresetService;
   public Client: ClientService;
   public Websocket: WebsocketService;
+  public Settings: SettingsService;
 
   constructor(options?: Options) {
     this.options = { ...DEFAULT_OPTIONS, ...options };
@@ -34,7 +36,7 @@ export default class SevWtf {
       (response) => response,
       (error) => {
         return Promise.reject(wrapException(error));
-      }
+      },
     );
 
     this.Tasks = new TaskService(this.options, this.axios);
@@ -43,6 +45,7 @@ export default class SevWtf {
     this.Preset = new PresetService(this.options, this.axios);
     this.Client = new ClientService(this.options, this.axios);
     this.Websocket = new WebsocketService(this.options, this.axios);
+    this.Settings = new SettingsService(this.options, this.axios);
   }
 
   /**
