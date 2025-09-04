@@ -3,10 +3,8 @@ export interface Settings {
     port: number;
     database: string;
     ffmpeg: string;
-  };
-  ai?: {
-    enabled: boolean;
-    model: string;
-    apiKey: string;
+    maxConcurrentTasks: number;
+    loglevel: string;
+    debug: string;
   };
 }

@@ -505,7 +505,7 @@ defineProps<Props>();
                     </template>
                 </div>
                 <div
-                    v-if="task.webhooks"
+                    v-if="task.webhooks?.length"
                     class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
                 >
                     <dt class="text-sm font-medium text-white">Webhooks</dt>

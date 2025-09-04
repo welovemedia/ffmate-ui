@@ -13,17 +13,10 @@ const settingsStore = useSettingsStore();
                     id: 'general',
                     label: 'General',
                 },
-                {
-                    id: 'ai',
-                    label: 'AI',
-                },
             ]"
         >
             <template #content:general>
                 <SettingsGeneral />
-            </template>
-            <template #content:ai>
-                <SettingsAI />
             </template>
         </Tabs>
     </div>
