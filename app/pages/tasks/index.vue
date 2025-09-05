@@ -146,7 +146,7 @@ const tableItems = computed(() => {
             :headers="[
                 { label: 'Name' },
                 { label: 'Priority' },
-                { label: 'Status' },
+                { label: 'Status', columnClass: 'w-48' },
                 { label: 'Progress' },
                 { label: 'Input', columnClass: 'w-64' },
                 { label: 'Output', columnClass: 'w-64' },
@@ -301,9 +301,13 @@ const tableItems = computed(() => {
                                     'bg-blue-500/50':
                                         cell.raw.status === 'RUNNING' ||
                                         cell.raw.stats === 'PRE_PROCESSING' ||
-                                        cell.raw.status === 'POST_PROCESSING',
+                                        cell.raw.status === 'POST_PROCESSING' ||
+                                        (cell.raw.isBatch &&
+                                            cell.raw.progress < 100),
                                     'bg-green-400/50':
-                                        cell.raw.status === 'DONE_SUCCESSFUL',
+                                        cell.raw.status === 'DONE_SUCCESSFUL' ||
+                                        (cell.raw.isBatch &&
+                                            cell.raw.progress === 100),
                                     'bg-red-400/50':
                                         cell.raw.status === 'DONE_ERROR',
                                     'bg-yellow-400/50':

@@ -96,6 +96,9 @@ export default class WebsocketService extends Base {
       case "deleted":
         this.callbacks.forEach((cb) => cb.onDelete?.(data));
         break;
+      case "finished":
+        // ignore batch:finished
+        break;
       default:
         this.debug("unhandled WebSocket message subject:", data.subject);
         break;
