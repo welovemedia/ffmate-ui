@@ -2,17 +2,21 @@ import tailwindcss from "@tailwindcss/vite"
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   modules: [
     "@pinia/nuxt",
     "@vueuse/nuxt",
     "nuxt-umami",
     "@nuxtjs/google-fonts",
   ],
+
   ssr: false,
   css: ["~/assets/css/style.css"],
+
   vite: {
     plugins: [tailwindcss()],
   },
+
   app: {
     pageTransition: { name: "page", mode: "out-in" },
     baseURL: "/ui/",
@@ -32,6 +36,7 @@ export default defineNuxtConfig({
       },
     },
   },
+
   googleFonts: {
     families: {
       Poppins: {
@@ -39,13 +44,17 @@ export default defineNuxtConfig({
       },
     },
   },
+
   umami: {
     id: "ffmate",
     host: "http://localhost:3000",
     customEndpoint: "/metrics/umami",
     autoTrack: true,
   },
+
   devServer: {
     port: 3001,
   },
+
+  compatibilityDate: "2025-09-08",
 })

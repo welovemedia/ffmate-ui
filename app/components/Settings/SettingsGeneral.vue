@@ -10,6 +10,16 @@ const form = reactive({
     loglevel: settingsStore.settings.general?.loglevel || "info",
     debug: settingsStore.settings.general?.debug || "",
 });
+
+const save = () => {
+    if (settingsStore.settings.general) {
+        settingsStore.settings.general.maxConcurrentTasks =
+            form.maxConcurrentTasks;
+        settingsStore.settings.general.debug = form.debug;
+        settingsStore.settings.general.loglevel = form.loglevel;
+    }
+    settingsStore.save();
+};
 </script>
 
 <template>
@@ -42,24 +52,22 @@ const form = reactive({
                 <FormFieldText
                     v-model="form.maxConcurrentTasks"
                     label="Max concurrent tasks"
-                    :disabled="true"
                     type="number"
                     ariaLabel="max concurrent tasks"
                 />
                 <FormFieldText
                     v-model="form.loglevel"
                     label="Loglevel"
-                    :disabled="true"
                     type="text"
                     ariaLabel="loglevel"
                 />
                 <FormFieldText
                     v-model="form.debug"
                     label="Debug"
-                    :disabled="true"
                     type="text"
                     ariaLabel="debug"
                 />
+                <Button @click="save()">Save</Button>
             </form>
         </template>
     </Setting>
