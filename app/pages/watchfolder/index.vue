@@ -4,7 +4,7 @@ import {
     PencilIcon,
     TrashIcon,
 } from "@heroicons/vue/24/solid";
-import type { Watchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolders/watchfolder";
+import type { Watchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolder/watchfolder";
 
 const watchfolderStore = useWatchfolderStore();
 const presetStore = usePresetStore();
@@ -21,7 +21,7 @@ const selectedItems = ref<string[]>([]);
 
 const editWatchfolder = (watchfolder: Watchfolder) => {
     useRouter().push({
-        name: "watchfolders-new",
+        name: "watchfolder-new",
         query: { edit: watchfolder.uuid },
     });
 };
@@ -36,12 +36,12 @@ const deleteWatchfolder = (watchfolder: Watchfolder) => {
     });
 };
 
-const watchfolders = computed(() => {
-    return watchfolderStore.watchfolders;
+const watchfolder = computed(() => {
+    return watchfolderStore.watchfolder;
 });
 
 const tableItems = computed(() => {
-    return watchfolders.value.map((t: Watchfolder) => {
+    return watchfolder.value.map((t: Watchfolder) => {
         const cells = [
             {
                 label: t.name,

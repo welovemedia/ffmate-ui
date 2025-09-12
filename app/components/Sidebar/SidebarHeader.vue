@@ -18,7 +18,9 @@ const clientStore = useClientStore();
                     leave-to-class="translate-x-[50px] opacity-0"
                 >
                     <div
-                        v-if="clientStore.isUpdateAvailable"
+                        v-if="
+                            clientStore.isReady && clientStore.isUpdateAvailable
+                        "
                         class="flex text-xs mt-2.5"
                     >
                         <span>Update available</span>
@@ -31,7 +33,7 @@ const clientStore = useClientStore();
                     leave-to-class="translate-x-[50px] opacity-0"
                 >
                     <div
-                        v-if="!clientStore.isFfmpegFound"
+                        v-if="clientStore.isReady && !clientStore.isFFmpegFound"
                         class="flex text-xs mt-2.5"
                     >
                         <a

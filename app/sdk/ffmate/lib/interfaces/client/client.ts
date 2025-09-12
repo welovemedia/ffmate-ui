@@ -1,9 +1,12 @@
 export interface Client {
   version: string;
-  ffmpeg: string;
   os: string;
   arch: string;
+  ffmpeg: string;
+  lastSeen: number;
+  self?: boolean;
 
-  uuid: string;
+  identifier: string;
+  clister: string;
   session: string;
 }

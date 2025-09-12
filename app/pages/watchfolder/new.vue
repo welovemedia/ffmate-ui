@@ -2,7 +2,7 @@
 import type {
     NewWatchfolder,
     Watchfolder,
-} from "~/sdk/ffmate/lib/interfaces/watchfolders/watchfolder";
+} from "~/sdk/ffmate/lib/interfaces/watchfolder/watchfolder";
 
 const presetStore = usePresetStore();
 const route = useRoute();
@@ -61,13 +61,13 @@ const save = () => {
         useFFMate()
             .Watchfolder.update(editWatchfolder.value.uuid, n)
             .then(() => {
-                navigateTo({ name: "watchfolders" });
+                navigateTo({ name: "watchfolder" });
             });
     } else {
         useFFMate()
             .Watchfolder.create(n)
             .then(() => {
-                navigateTo({ name: "watchfolders" });
+                navigateTo({ name: "watchfolder" });
             });
     }
 };
@@ -245,7 +245,7 @@ const save = () => {
                 <button
                     type="button"
                     class="text-sm/6 font-semibold text-gray-200 cursor-pointer"
-                    @click="navigateTo({ name: 'watchfolders' })"
+                    @click="navigateTo({ name: 'watchfolder' })"
                 >
                     Cancel
                 </button>

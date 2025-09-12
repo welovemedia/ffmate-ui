@@ -137,8 +137,8 @@ const save = () => {
                 <p class="text-sm/6 text-gray-400">
                     {{
                         editPresetId
-                            ? "Edit preset to use in your watchfolders"
-                            : "Create a new preset to use in your watchfolders"
+                            ? "Edit preset to use in your watchfolder"
+                            : "Create a new preset to use in your watchfolder"
                     }}
                 </p>
             </div>

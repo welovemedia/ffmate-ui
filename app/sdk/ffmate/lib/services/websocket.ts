@@ -2,7 +2,7 @@ import type { AxiosInstance } from "axios";
 import Base, { type Options } from "../Base";
 import type { Preset } from "../interfaces/presets/preset";
 import type { Task } from "../interfaces/tasks/task";
-import type { Watchfolder } from "../interfaces/watchfolders/watchfolder";
+import type { Watchfolder } from "../interfaces/watchfolder/watchfolder";
 import type { Webhook, WebhookExecution } from "../interfaces/webhooks/webhook";
 import type { Settings } from "../interfaces/settings/settings";
 
@@ -22,6 +22,7 @@ export interface WebsocketMessage {
     | Webhook
     | WebhookExecution
     | Settings
+    | Client
     | string;
 }
 
