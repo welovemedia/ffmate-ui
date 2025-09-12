@@ -1,64 +1,93 @@
-import axios from "axios"
-import { defineStore } from "pinia"
-import type { Client } from "~/sdk/ffmate/lib/interfaces/client/client"
+import axios from "axios";
+import { defineStore } from "pinia";
+import type { Client } from "~/sdk/ffmate/lib/interfaces/client/client";
+import type { WebsocketMessage } from "~/sdk/ffmate/lib/services/websocket";
 
 interface Update {
-  Version: string
-  Sha256: string
+  Version: string;
+  Sha256: string;
 }
 
 const originalStore = defineStore("client", {
   state: (): {
-    client: Client | undefined
-    newVersion: string | undefined
+    clients: Client[];
+    latestVersion?: string;
   } => {
-    return { client: undefined, newVersion: undefined }
+    return { clients: [], latestVersion: undefined };
   },
   getters: {
-    isUpdateAvailable: (state) => {
-      if (!state.newVersion || !state.client?.version) {
-        return false
-      }
-      return state.newVersion !== state.client?.version
+    selfClient: (state) => {
+      return state.clients.find((c) => c.self) || undefined;
     },
-    isFfmpegFound: (state) => {
-      return state.client?.ffmpeg.length !== 0
+    isUpdateAvailable: (state) => {
+      if (!state.latestVersion) return false;
+      return state.clients.find((c) => c.self)?.version !== state.latestVersion;
+    },
+    isFFmpegFound: (state) => {
+      return (
+        state.clients.find((c) => c.self) &&
+        state.clients.find((c) => c.self)?.ffmpeg != ""
+      );
+    },
+    isReady: (state) => {
+      return state.latestVersion !== undefined && state.clients.length > 0;
     },
   },
   actions: {
-    async loadClient() {
-      const c = await useFFMate().Client.getClient()
+    async loadClients() {
+      const c = await useFFMate().Client.getClients();
       if (c) {
-        this.client = c
+        this.clients = c;
       }
     },
     async useCheckForUpdates() {
       const version = (
         await axios.get<Update>(
-          "https://earth.ffmate.io/_update/ffmate/darwin-arm64.json"
+          "https://earth.ffmate.io/_update/ffmate/darwin-arm64.json",
         )
-      )?.data?.Version
+      )?.data?.Version;
       if (version) {
-        this.newVersion = `ffmate/v${version}`
+        this.latestVersion = version;
       }
     },
   },
-})
+});
 
-const store = ref<ReturnType<typeof originalStore> | null>()
+const store = ref<ReturnType<typeof originalStore> | null>();
 
 export const useClientStore = (): ReturnType<typeof originalStore> => {
   if (!store.value) {
-    store.value = originalStore()
+    store.value = originalStore();
 
-    store.value.loadClient()
+    store.value.loadClients();
 
-    useIntervalFn(() => {
-      store.value!.useCheckForUpdates()
-    }, 1000 * 60 * 60) // every hour
-
-    store.value!.useCheckForUpdates()
+    useIntervalFn(
+      () => {
+        console.log("loadad");
+        store.value!.useCheckForUpdates();
+      },
+      1000 * 60 * 60, // every hour
+      { immediateCallback: true },
+    );
   }
 
-  return store.value
-}
+  useFFMate().Websocket.connect({
+    onUpdate: (data: WebsocketMessage) => {
+      if (data.subject !== "client:updated") return;
+
+      const payload = data.payload as Client;
+      const clients = store.value!.clients;
+
+      const idx = clients.findIndex((c) => c.identifier === payload.identifier);
+
+      if (idx === -1) {
+        clients.push(payload); // push new entry
+      } else {
+        // update in-place to preserve reactivity
+        clients[idx] = payload;
+      }
+    },
+  });
+
+  return store.value;
+};

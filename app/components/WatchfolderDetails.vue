@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Watchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolders/watchfolder";
+import type { Watchfolder } from "~/sdk/ffmate/lib/interfaces/watchfolder/watchfolder";
 
 const presetStore = usePresetStore();
 

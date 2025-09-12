@@ -5,7 +5,6 @@ const settingsStore = useSettingsStore();
 const form = reactive({
     port: settingsStore.settings.general?.port || 0,
     database: settingsStore.settings.general?.database || "",
-    ffmpeg: settingsStore.settings.general?.ffmpeg || "",
     maxConcurrentTasks: settingsStore.settings.general?.maxConcurrentTasks || 0,
     loglevel: settingsStore.settings.general?.loglevel || "info",
     debug: settingsStore.settings.general?.debug || "",
@@ -41,13 +40,6 @@ const save = () => {
                     :disabled="true"
                     type="text"
                     ariaLabel="database"
-                />
-                <FormFieldText
-                    v-model="form.ffmpeg"
-                    label="FFmpeg"
-                    :disabled="true"
-                    type="text"
-                    ariaLabel="ffmpeg"
                 />
                 <FormFieldText
                     v-model="form.maxConcurrentTasks"

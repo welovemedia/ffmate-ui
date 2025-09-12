@@ -1,48 +1,48 @@
-import type { NewWebhook } from "../webhooks/webhook"
+import type { NewWebhook } from "../webhooks/webhook";
 
 interface PrePostProcessingReduced {
-  scriptPath?: string
-  sidecarPath?: string
-  importSidecar?: boolean
+  scriptPath?: string;
+  sidecarPath?: string;
+  importSidecar?: boolean;
 }
 
 export interface Preset {
-  uuid: string
+  uuid: string;
 
-  name?: string
-  description?: string
+  name: string;
+  description?: string;
 
-  command?: string
-  priority: number
-  outputFile?: string
+  command: string;
+  priority: number;
+  outputFile?: string;
 
-  webhooks?: NewWebhook[]
+  webhooks?: NewWebhook[];
 
-  createdAt: number
-  updatedAt: number
+  createdAt: number;
+  updatedAt: number;
 
-  preProcessing?: PrePostProcessingReduced
-  postProcessing?: PrePostProcessingReduced
+  preProcessing?: PrePostProcessingReduced;
+  postProcessing?: PrePostProcessingReduced;
 }
 
 export interface NewPreset {
-  name: string
-  description: string
+  name: string;
+  description: string;
 
-  command: string
-  priority: number
-  outputFile: string
+  command: string;
+  priority: number;
+  outputFile: string;
 
-  webhooks?: NewWebhook[]
+  webhooks?: NewWebhook[];
 
-  preProcessing?: PrePostProcessing
-  postProcessing?: PrePostProcessing
+  preProcessing?: PrePostProcessing;
+  postProcessing?: PrePostProcessing;
 
-  globalPresetName?: string
+  globalPresetName?: string;
 }
 
 export interface PrePostProcessing {
-  scriptPath?: string
-  sidecarPath?: string
-  importSidecar?: boolean
+  scriptPath?: string;
+  sidecarPath?: string;
+  importSidecar?: boolean;
 }

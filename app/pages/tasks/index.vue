@@ -105,8 +105,8 @@ const tableItems = computed(() => {
                 id: "inputFile",
             },
             {
-                label: useMiddleTruncation(t.outputFile.raw, 32),
-                id: "outputFile",
+                label: t.client?.identifier ?? "-",
+                id: "client",
             },
             { id: "chevron" },
         ];
@@ -149,7 +149,7 @@ const tableItems = computed(() => {
                 { label: 'Status', columnClass: 'w-48' },
                 { label: 'Progress' },
                 { label: 'Input', columnClass: 'w-64' },
-                { label: 'Output', columnClass: 'w-64' },
+                { label: 'Client' },
                 { label: 'pagination', columnClass: 'w-16' },
             ]"
             :rows="tableItems"

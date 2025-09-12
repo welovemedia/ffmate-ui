@@ -87,7 +87,7 @@ const save = () => {
                         <label
                             for="first-name"
                             class="block text-sm/6 font-medium text-gray-200"
-                            >Name *</label
+                            >Url *</label
                         >
                         <div class="mt-2">
                             <input

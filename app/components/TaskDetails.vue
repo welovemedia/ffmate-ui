@@ -527,6 +527,31 @@ defineProps<Props>();
                         </dd>
                     </template>
                 </div>
+                <div
+                    v-if="task.client"
+                    class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                >
+                    <dt class="text-sm/6 font-medium text-white">Client</dt>
+                    <dd
+                        class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0"
+                    ></dd>
+                    <dt class="text-sm/6 font-medium text-white ml-2">Name</dt>
+                    <dd
+                        class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0"
+                    >
+                        {{ task.client?.identifier ?? "n/a" }}
+                    </dd>
+                    <dt class="text-sm/6 font-medium text-white ml-2">
+                        Details
+                    </dt>
+                    <dd
+                        class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0"
+                    >
+                        Version: {{ task.client?.version ?? "n/a" }} | OS:
+                        {{ task.client?.os ?? "n/a" }} | Arch:
+                        {{ task.client?.arch ?? "n/a" }}
+                    </dd>
+                </div>
             </dl>
         </div>
     </div>

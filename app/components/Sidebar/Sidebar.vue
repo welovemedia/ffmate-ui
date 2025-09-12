@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { UserIcon } from "@heroicons/vue/24/outline";
 import {
     Bars3Icon,
     FireIcon,
@@ -24,7 +25,7 @@ const menu = [
         label: "Watchfolder",
         icon: FolderIcon,
         to: {
-            name: "watchfolders",
+            name: "watchfolder",
         } as RouteLocationNamedRaw,
     },
     {
@@ -49,12 +50,19 @@ const menu = [
         } as RouteLocationNamedRaw,
     },
     {
-        label: "Settings",
-        icon: AdjustmentsVerticalIcon,
+        label: "Clients",
+        icon: UserIcon,
         to: {
-            name: "settings",
+            name: "clients",
         } as RouteLocationNamedRaw,
     },
+    // {
+    //     label: "Settings",
+    //     icon: AdjustmentsVerticalIcon,
+    //     to: {
+    //         name: "settings",
+    //     } as RouteLocationNamedRaw,
+    // },
 ];
 
 const menuBottom = [

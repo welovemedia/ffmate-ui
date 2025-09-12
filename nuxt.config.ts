@@ -1,60 +1,60 @@
-import tailwindcss from "@tailwindcss/vite"
+import tailwindcss from "@tailwindcss/vite";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+    devtools: { enabled: true },
 
-  modules: [
-    "@pinia/nuxt",
-    "@vueuse/nuxt",
-    "nuxt-umami",
-    "@nuxtjs/google-fonts",
-  ],
+    modules: [
+        "@pinia/nuxt",
+        "@vueuse/nuxt",
+        "nuxt-umami",
+        "@nuxtjs/google-fonts",
+    ],
 
-  ssr: false,
-  css: ["~/assets/css/style.css"],
+    ssr: false,
+    css: ["~/assets/css/style.css"],
 
-  vite: {
-    plugins: [tailwindcss()],
-  },
+    vite: {
+        plugins: [tailwindcss()],
+    },
 
-  app: {
-    pageTransition: { name: "page", mode: "out-in" },
-    baseURL: "/ui/",
-    head: {
-      charset: "utf-8",
-      viewport: "width=device-width, initial-scale=1",
-      link: [
-        {
-          rel: "icon",
-          type: "image/webp",
-          href: "/ui/icon_black.webp",
+    app: {
+        pageTransition: { name: "page", mode: "out-in" },
+        baseURL: "/ui/",
+        head: {
+            charset: "utf-8",
+            viewport: "width=device-width, initial-scale=1",
+            link: [
+                {
+                    rel: "icon",
+                    type: "image/webp",
+                    href: "/ui/icon_black.webp",
+                },
+            ],
+            title: "ffmate",
+            htmlAttrs: {
+                class: "overflow-y-scroll",
+            },
         },
-      ],
-      title: "ffmate",
-      htmlAttrs: {
-        class: "overflow-y-scroll",
-      },
     },
-  },
 
-  googleFonts: {
-    families: {
-      Poppins: {
-        wght: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-      },
+    googleFonts: {
+        families: {
+            Poppins: {
+                wght: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+            },
+        },
     },
-  },
 
-  umami: {
-    id: "ffmate",
-    host: "http://localhost:3000",
-    customEndpoint: "/metrics/umami",
-    autoTrack: true,
-  },
+    umami: {
+        id: "ffmate",
+        host: "http://localhost:3000",
+        customEndpoint: "/umami",
+        autoTrack: true,
+    },
 
-  devServer: {
-    port: 3001,
-  },
+    devServer: {
+        port: 3001,
+    },
 
-  compatibilityDate: "2025-09-08",
-})
+    compatibilityDate: "2025-09-08",
+});
