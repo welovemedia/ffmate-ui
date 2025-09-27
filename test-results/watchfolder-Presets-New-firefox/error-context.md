@@ -1,0 +1,97 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e5]:
+  - generic [ref=e7]:
+    - list [ref=e8]:
+      - listitem [ref=e9]:
+        - banner [ref=e10]:
+          - generic [ref=e12]:
+            - img [ref=e13]
+            - img [ref=e14]
+      - listitem [ref=e15]:
+        - link "Dashboard" [ref=e16] [cursor=pointer]:
+          - /url: /ui/tasks
+          - img [ref=e17] [cursor=pointer]
+          - text: Dashboard
+      - listitem [ref=e19]:
+        - link "Watchfolder" [ref=e20] [cursor=pointer]:
+          - /url: /ui/watchfolder
+          - img [ref=e21] [cursor=pointer]
+          - text: Watchfolder
+      - listitem [ref=e23]:
+        - link "Presets" [ref=e24] [cursor=pointer]:
+          - /url: /ui/presets
+          - img [ref=e25] [cursor=pointer]
+          - text: Presets
+      - listitem [ref=e28]:
+        - link "Webhooks" [ref=e29] [cursor=pointer]:
+          - /url: /ui/webhooks
+          - img [ref=e30] [cursor=pointer]
+          - text: Webhooks
+      - listitem [ref=e32]:
+        - link "Sent hooks" [ref=e33] [cursor=pointer]:
+          - /url: /ui/executions
+          - img [ref=e34] [cursor=pointer]
+          - text: Sent hooks
+      - listitem [ref=e37]:
+        - link "Clients" [ref=e38] [cursor=pointer]:
+          - /url: /ui/clients
+          - img [ref=e39] [cursor=pointer]
+          - text: Clients
+    - list [ref=e41]:
+      - listitem [ref=e42]:
+        - generic [ref=e43] [cursor=pointer]:
+          - img [ref=e44] [cursor=pointer]
+          - text: Logs
+  - generic [ref=e46]:
+    - heading "New watchfolder" [level=1] [ref=e48]
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - heading "New Watchfolder" [level=2] [ref=e51]
+        - paragraph [ref=e52]: Create a new watchfolder to automatically create new tasks
+      - generic [ref=e53]:
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]: Name *
+            - textbox "Enter watchfolder name" [ref=e59]: c2448472-6d92-4bb0-9e61-fbc49e769bf5
+          - generic [ref=e60]:
+            - generic [ref=e61]: Description
+            - textbox "Description" [ref=e63]
+          - generic [ref=e64]:
+            - generic [ref=e65]: Path *
+            - textbox "Path *" [ref=e67]: /dev/null
+          - generic [ref=e69]:
+            - generic [ref=e70]: Preset *
+            - generic [ref=e71]:
+              - combobox [ref=e72]:
+                - text: ">"
+                - option "4e620f0d-e223-4576-ab58-7dc218db17e1"
+                - option "fe2d87dc-618b-4b71-aef7-e4d4800a1bd0"
+                - option "Convert to MOV"
+              - img
+          - generic [ref=e73]:
+            - generic [ref=e74]: Interval (sec) *
+            - spinbutton [ref=e76]: "5"
+          - generic [ref=e77]:
+            - generic [ref=e78]: Growth check *
+            - spinbutton [ref=e80]: "3"
+          - generic [ref=e81]:
+            - generic [ref=e82]: Include extensions
+            - textbox "Include extensions Exclude extensions Enabled" [ref=e84]
+          - generic [ref=e85]:
+            - generic [ref=e86]: Exclude extensions
+            - textbox "Comma separated list of extensions" [ref=e88]
+          - generic [ref=e90]:
+            - generic [ref=e91]: Enabled
+            - switch "Enabled" [ref=e92] [cursor=pointer]:
+              - generic [ref=e93] [cursor=pointer]: Enabled
+              - generic:
+                - generic:
+                  - img
+                - generic:
+                  - img
+        - generic [ref=e94]:
+          - button "Cancel" [ref=e95] [cursor=pointer]
+          - button "Create" [active] [ref=e96] [cursor=pointer]
+```

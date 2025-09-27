@@ -1,4 +1,4 @@
-import { type AxiosInstance } from "axios"
+import { type AxiosInstance } from "axios";
 
 export interface Options {}
 
@@ -9,10 +9,17 @@ export default abstract class Base {
 
   constructor(options: Options, axios: AxiosInstance) {
     this.options = options;
-    this.server =
-      process.env.NODE_ENV === "production"
-        ? `${self.location.protocol}//${self.location.host}`
-        : `http://localhost:3000`;
+
+    // add support to overwrite the apiServer using a queryString
+    const urlParam = new URLSearchParams(self.location.search).get("apiServer");
+    if (urlParam) {
+      this.server = urlParam;
+    } else {
+      this.server =
+        process.env.NODE_ENV === "production"
+          ? `${self.location.protocol}//${self.location.host}`
+          : `http://localhost:3000`;
+    }
     this.axios = axios;
   }
 
