@@ -54,6 +54,6 @@ export default class WatchfolderService extends Base {
     };
 
     protected getEndpoint(endpoint: string): string {
-        return `${this.server}/api/v1/watchfolder${endpoint}`;
+        return `${this.server}/api/v1/watchfolders${endpoint}`;
     }
 }
