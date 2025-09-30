@@ -3,6 +3,7 @@ export interface Client {
   os: string;
   arch: string;
   ffmpeg: string;
+  maxConcurrentTasks: string;
   lastSeen: number;
   self?: boolean;
 

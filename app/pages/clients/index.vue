@@ -45,6 +45,10 @@ const tableItems = computed(() => {
                 id: "version",
             },
             {
+                label: t.maxConcurrentTasks,
+                id: "tasks",
+            },
+            {
                 label: t.os,
                 id: "os",
             },
@@ -79,6 +83,7 @@ const tableItems = computed(() => {
         :headers="[
             { label: 'Identifier' },
             { label: 'Version' },
+            { label: 'Max tasks' },
             { label: 'OS' },
             { label: 'Arch' },
             { label: 'Online' },
