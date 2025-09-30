@@ -55,6 +55,7 @@ const form = reactive({
     command: editPreset.value?.command ?? "",
     priority: editPreset.value?.priority ?? 0,
     outputFile: editPreset.value?.outputFile ?? "",
+    retries: editPreset.value?.retries ?? 0,
     preProcessing: {
         scriptPath: editPreset.value?.preProcessing?.scriptPath ?? "",
         sidecarPath: editPreset.value?.preProcessing?.sidecarPath ?? "",
@@ -75,7 +76,7 @@ const applyPreset = (preset: NewPreset) => {
     form.priority = preset.priority ?? 0;
     if (preset.outputFile) {
         form.outputFile =
-            clientStore.client?.os === "windows"
+            clientStore.selfClient?.os === "windows"
                 ? preset.outputFile.replaceAll(/\//g, "\\") // Normalize Windows paths
                 : preset.outputFile;
     }
@@ -97,6 +98,10 @@ const save = () => {
             typeof form.priority === "string"
                 ? parseInt(form.priority)
                 : form.priority,
+        retries:
+            typeof form.retries === "string"
+                ? parseInt(form.retries)
+                : form.retries,
         outputFile: form.outputFile,
         preProcessing: {
             scriptPath: form.preProcessing.scriptPath,
@@ -249,7 +254,7 @@ const save = () => {
                         />
                     </div>
 
-                    <div class="sm:col-span-full">
+                    <div class="sm:col-span-3">
                         <FormFieldText
                             v-model="form.priority"
                             label="Priority"
@@ -258,6 +263,17 @@ const save = () => {
                             type="number"
                             id="priority"
                             ariaLabel="preset priority"
+                        />
+                    </div>
+                    <div class="sm:col-span-3">
+                        <FormFieldText
+                            v-model="form.retries"
+                            label="Retries"
+                            placeholder="Enter retries"
+                            name="retries"
+                            type="number"
+                            id="retries"
+                            ariaLabel="preset retries"
                         />
                     </div>
 

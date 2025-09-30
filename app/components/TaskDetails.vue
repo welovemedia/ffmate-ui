@@ -65,6 +65,18 @@ defineProps<Props>();
                     </dd>
                 </div>
 
+                <div
+                    v-if="task.retries > 0"
+                    class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                >
+                    <dt class="text-sm/6 font-medium text-white">Retry</dt>
+                    <dd
+                        class="mt-1 text-sm/6 text-gray-400 sm:col-span-2 sm:mt-0"
+                    >
+                        {{ task.retried }}/{{ task.retries }}
+                    </dd>
+                </div>
+
                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt class="text-sm/6 font-medium text-white">Status</dt>
                     <dd

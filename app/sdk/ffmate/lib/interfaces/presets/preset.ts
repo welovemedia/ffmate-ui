@@ -16,6 +16,8 @@ export interface Preset {
   priority: number;
   outputFile?: string;
 
+  retries: number;
+
   webhooks?: NewWebhook[];
 
   createdAt: number;
@@ -32,6 +34,8 @@ export interface NewPreset {
   command: string;
   priority: number;
   outputFile: string;
+
+  retries: number;
 
   webhooks?: NewWebhook[];
 
