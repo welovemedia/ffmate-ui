@@ -6,7 +6,6 @@ export default defineNuxtConfig({
   modules: [
     "@pinia/nuxt",
     "@vueuse/nuxt",
-    "nuxt-umami",
     "@nuxtjs/google-fonts",
     "@nuxt/test-utils/module",
   ],
@@ -44,13 +43,6 @@ export default defineNuxtConfig({
         wght: [100, 200, 300, 400, 500, 600, 700, 800, 900],
       },
     },
-  },
-
-  umami: {
-    id: "ffmate",
-    host: "http://localhost:3000",
-    customEndpoint: "/umami",
-    autoTrack: true,
   },
 
   devServer: {
