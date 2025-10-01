@@ -15,6 +15,15 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      rollupOptions: {
+        output: {
+          chunkFileNames: '_nuxt/chunks/ff_[name].js',
+          entryFileNames: '_nuxt/ff_[name].js',
+          assetFileNames: '_nuxt/ff_[name].[ext]'
+        }
+      }
+    }
   },
 
   app: {
