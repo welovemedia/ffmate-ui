@@ -35,6 +35,8 @@ export interface Task {
 
   source: "watchfolder" | "api";
 
+  labels?: string[];
+
   startedAt?: number;
   finishedAt?: number;
 

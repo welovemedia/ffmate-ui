@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { TrashIcon } from "@heroicons/vue/24/solid";
 import type {
     NewWatchfolder,
     Watchfolder,
@@ -28,6 +29,7 @@ const form = reactive({
     interval: editWatchfolder.value?.interval ?? 5,
     growthChecks: editWatchfolder.value?.growthChecks ?? 3,
     suspended: editWatchfolder.value?.suspended ?? false,
+    labels: editWatchfolder.value?.labels ?? [],
     filterInclude:
         editWatchfolder.value?.filter?.extensions?.include?.join(",") ?? "",
     filterExclude:
@@ -43,6 +45,7 @@ const save = () => {
         preset: form.preset,
         path: form.path,
         suspended: form.suspended,
+        labels: form.labels.filter(l => l.length),
         filter: {
             extensions: {
                 include: [],
@@ -237,8 +240,42 @@ const save = () => {
                             @update:modelValue="form.suspended = !$event"
                         />
                     </div>
+
+                    <Divider class="col-span-full" />
+
+                    <div class="sm:col-span-full">
+                        <h4 class="text-sm">Labels</h4>
+                        <ul class="flex flex-col gap-y-6">
+                            <li
+                                v-for="(_, index) in form.labels"
+                                :key="index"
+                                class="flex gap-x-6 justify-between w-full"
+                            >
+                                <div class="w-full flex gap-x-2 items-end">
+                                    <FormFieldText
+                                        v-model="form.labels[index]!"
+                                        label="Label"
+                                        class="w-full"
+                                        :maxLength="32"
+                                        placeholder="Label"
+                                        ariaLabel="label"
+                                    />
+                                    <TrashIcon
+                                        class="size-4 mb-3 text-gray-400 hover:text-gray-300 cursor-pointer"
+                                        @click="form.labels.splice(index, 1)"
+                                    />
+                                </div>
+                            </li>
+                        </ul>
+                        <Button
+                            class="w-full mt-4"
+                            @click.stop="form.labels.push('')"
+                            >+ Label</Button
+                        >
+                    </div>
                 </div>
             </div>
+
             <div
                 class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8"
             >

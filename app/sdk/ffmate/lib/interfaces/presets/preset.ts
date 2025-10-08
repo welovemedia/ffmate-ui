@@ -18,6 +18,8 @@ export interface Preset {
 
   retries: number;
 
+  labels?: string[];
+
   webhooks?: NewWebhook[];
 
   createdAt: number;
@@ -36,6 +38,8 @@ export interface NewPreset {
   outputFile: string;
 
   retries: number;
+
+  labels?: string[];
 
   webhooks?: NewWebhook[];
 

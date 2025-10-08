@@ -4,10 +4,11 @@ export interface Client {
   arch: string;
   ffmpeg: string;
   maxConcurrentTasks: string;
+  labels?: string[];
   lastSeen: number;
   self?: boolean;
 
   identifier: string;
-  clister: string;
+  cluster: string;
   session: string;
 }

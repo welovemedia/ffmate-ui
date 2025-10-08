@@ -66,6 +66,7 @@ const form = reactive({
         sidecarPath: editPreset.value?.postProcessing?.sidecarPath ?? "",
     },
     webhooks: editPreset.value?.webhooks ?? ([] as NewWebhook[]),
+    labels: editPreset.value?.labels ?? ([] as string[]),
     globalPresetName: "",
 });
 
@@ -113,6 +114,7 @@ const save = () => {
             sidecarPath: form.postProcessing.sidecarPath,
         },
         webhooks: form.webhooks,
+        labels: form.labels.filter(l => l.length),
         globalPresetName: form.globalPresetName,
     } as NewPreset;
 
@@ -326,6 +328,39 @@ const save = () => {
                     <Divider class="col-span-full" />
 
                     <div class="sm:col-span-full">
+                        <h4 class="text-sm">Labels</h4>
+                        <ul class="flex flex-col gap-y-6">
+                            <li
+                                v-for="(_, index) in form.labels"
+                                :key="index"
+                                class="flex gap-x-6 justify-between w-full"
+                            >
+                                <div class="w-full flex gap-x-2 items-end">
+                                    <FormFieldText
+                                        v-model="form.labels[index]!"
+                                        label="Label"
+                                        class="w-full"
+                                        :maxLength="32"
+                                        placeholder="Label"
+                                        ariaLabel="label"
+                                    />
+                                    <TrashIcon
+                                        class="size-4 mb-3 text-gray-400 hover:text-gray-300 cursor-pointer"
+                                        @click="form.labels.splice(index, 1)"
+                                    />
+                                </div>
+                            </li>
+                        </ul>
+                        <Button
+                            class="w-full mt-4"
+                            @click.stop="form.labels.push('')"
+                            >+ Label</Button
+                        >
+                    </div>
+
+                    <Divider class="col-span-full" />
+
+                    <div class="sm:col-span-full">
                         <h4 class="text-sm">Webhooks</h4>
                         <ul class="flex flex-col gap-y-6">
                             <li
@@ -380,7 +415,7 @@ const save = () => {
                                     url: '',
                                 } as NewWebhook)
                             "
-                            >+ webhook</Button
+                            >+ Webhook</Button
                         >
                     </div>
                 </div>
