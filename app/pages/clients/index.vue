@@ -6,6 +6,8 @@ useCurrentPage().setCurrent("Clients");
 
 const clientStore = useClientStore();
 
+const selectedItems = ref<string[]>([]);
+
 const clients = computed(() => {
     return clientStore.clients
         .map((c) => {
@@ -45,18 +47,6 @@ const tableItems = computed(() => {
                 id: "version",
             },
             {
-                label: t.maxConcurrentTasks,
-                id: "tasks",
-            },
-            {
-                label: t.os,
-                id: "os",
-            },
-            {
-                label: t.arch,
-                id: "arch",
-            },
-            {
                 label: t.online,
                 id: "online",
             },
@@ -83,13 +73,12 @@ const tableItems = computed(() => {
         :headers="[
             { label: 'Identifier' },
             { label: 'Version' },
-            { label: 'Max tasks' },
-            { label: 'OS' },
-            { label: 'Arch' },
             { label: 'Online' },
             { label: 'Last seen', columnClass: 'w-50' },
         ]"
         :rows="tableItems"
+        :selectAble="['click', 'single']"
+        @update:select="selectedItems = $event"
     >
         <template #cell.label="{ cell, hoveredRow }">
             <span
@@ -110,6 +99,18 @@ const tableItems = computed(() => {
                 v-if="cell.id === 'online' && !cell.raw.online"
                 class="size-2 rounded-full bg-gray-300 opacity-75"
             ></span>
+        </template>
+        <template #row.after="{ row }">
+            <div
+                v-if="selectedItems.includes(row.uuid)"
+                class="h-auto overflow-hidden transition-all"
+            >
+                <div
+                    class="px-12 mb-2 bg-white/10 backdrop-blur-3xl -mt-2 rounded-b-lg w-[99%] mx-auto"
+                >
+                    <ClientDetails :client="row.raw" />
+                </div>
+            </div>
         </template>
     </AppTableNext>
 </template>
