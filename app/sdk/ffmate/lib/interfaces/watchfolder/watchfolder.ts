@@ -1,44 +1,47 @@
 export interface Watchfolder {
-    uuid: string;
+  uuid: string;
 
-    name?: string;
-    description?: string;
+  name?: string;
+  description?: string;
 
-    path: string;
-    interval: number;
-    growthChecks: number;
+  path: string;
+  interval: number;
+  growthChecks: number;
 
-    suspended: boolean;
+  labels?: string[];
 
-    createdAt: number;
-    updatedAt: number;
-    lastCheck: number;
+  suspended: boolean;
 
-    error?: string;
+  createdAt: number;
+  updatedAt: number;
+  lastCheck: number;
 
-    filter?: WatchfolderFilter;
+  error?: string;
 
-    preset: string;
+  filter?: WatchfolderFilter;
+
+  preset: string;
 }
 
 export interface NewWatchfolder {
-    name: string;
-    description?: string;
+  name: string;
+  description?: string;
 
-    path: string;
-    interval: number;
-    growthChecks: number;
+  path: string;
+  interval: number;
+  growthChecks: number;
 
-    filter?: WatchfolderFilter;
+  filter?: WatchfolderFilter;
+  labels?: string[];
 
-    preset: string;
+  preset: string;
 }
 
 export interface WatchfolderFilter {
-    extensions?: WatchfolderFilterExtension;
+  extensions?: WatchfolderFilterExtension;
 }
 
 export interface WatchfolderFilterExtension {
-    include: string[];
-    exclude: string[];
+  include: string[];
+  exclude: string[];
 }
