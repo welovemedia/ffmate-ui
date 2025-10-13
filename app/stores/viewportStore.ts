@@ -1,11 +1,20 @@
 import { defineStore } from "pinia";
 
 const originalStore = defineStore("viewport", {
-  state: (): { sidebar: { expand: boolean } } => {
-    return { sidebar: { expand: true } };
+  state: (): {
+    sidebar: { expand: boolean };
+    logs: { open: boolean };
+    updates: { open: boolean };
+  } => {
+    return {
+      sidebar: { expand: true },
+      logs: { open: false },
+      updates: { open: false },
+    };
   },
   actions: {},
   persist: {
+    pick: ["sidebar", "logs"],
     storage: localStorage,
   },
 });

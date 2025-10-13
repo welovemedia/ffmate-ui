@@ -2,7 +2,7 @@
 import { BookOpenIcon, PlusIcon } from "@heroicons/vue/24/solid";
 
 const confirmStore = useConfirmStore();
-const logsStore = useLogStore();
+const viewportStore = useViewportStore();
 const route = useRoute();
 
 const add = () => {
@@ -51,8 +51,20 @@ const add = () => {
         leave-to-class="translate-y-[500px] opacity-0"
     >
         <Logs
-            v-if="logsStore.open"
-            class="transition-all duration-500 ease-in-out"
+            v-if="viewportStore.logs.open"
+            class="transition-all duration-300 ease-in-out"
+        />
+    </Transition>
+    <Transition
+        enter-from-class="translate-y-[500px] opacity-0"
+        enter-to-class="translate-y-0 opacity-100"
+        leave-from-class="translate-y-0 opacity-100"
+        leave-to-class="translate-y-[500px] opacity-0"
+    >
+        <ModalUpdates
+            v-if="viewportStore.updates.open"
+            class="transition-all duration-300 ease-in-out"
+            @close="viewportStore.updates.open = false"
         />
     </Transition>
     <div class="min-h-screen w-full flex items-start text-white">

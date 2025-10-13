@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-import { UserIcon } from "@heroicons/vue/24/outline";
+import {
+    ArrowDownTrayIcon,
+    BookOpenIcon,
+    CommandLineIcon,
+    UserIcon,
+} from "@heroicons/vue/24/outline";
 import {
     Bars3Icon,
     FireIcon,
@@ -12,8 +17,9 @@ import {
 import type { RouteLocationNamedRaw } from "vue-router";
 import { useViewportStore } from "~/stores/viewportStore";
 
-const logStore = useLogStore();
 const viewportStore = useViewportStore();
+
+const nuxtlink = resolveComponent("NuxtLink");
 
 const menu = [
     {
@@ -67,13 +73,25 @@ const menu = [
     // },
 ];
 
-const menuBottom = [
+const menuBottom = computed(() => [
+    {
+        label: "Updates",
+        icon: ArrowDownTrayIcon,
+        active: viewportStore.updates.open,
+        fn: () => (viewportStore.updates.open = !viewportStore.updates.open),
+    },
     {
         label: "Logs",
-        icon: Bars3Icon,
-        fn: () => (logStore.open = !logStore.open),
+        icon: CommandLineIcon,
+        active: viewportStore.logs.open,
+        fn: () => (viewportStore.logs.open = !viewportStore.logs.open),
     },
-];
+    {
+        label: "Documentation",
+        icon: BookOpenIcon,
+        to: "https://docs.ffmate.io",
+    },
+]);
 </script>
 
 <template>
@@ -115,16 +133,30 @@ const menuBottom = [
             </li>
         </ul>
 
-        <!-- <ul class="flex flex-col gap-y-2 p-4 text-xs">
-            <li v-for="item in menuBottom" :key="item.label">
-                <span
-                    class="px-4 py-2 rounded-lg hover:bg-white/10 flex gap-x-2 items-center text-gray-300 hover:text-white cursor-pointer"
-                    @click="item.fn"
+        <ul class="flex flex-col gap-y-2 text-xs mx-auto w-full p-3">
+            <li
+                v-for="item in menuBottom"
+                :key="item.label"
+                class="size-8 flex-row justify-start cursor-pointer transition-color duration-200 px-2 overflow-hidden p-3 rounded-lg hover:bg-white/10 flex gap-x-2 items-center text-gray-300 hover:text-white whitespace-nowrap"
+                :class="{
+                    'bg-white/10 text-white': item.active,
+                    'w-full': viewportStore.sidebar.expand,
+                }"
+                @click="item.fn ? item.fn() : null"
+            >
+                <component
+                    :is="item.to ? nuxtlink : 'div'"
+                    :to="item.to ? item.to : ''"
+                    target="_blank"
+                    class="flex gap-x-2 items-center"
                 >
-                    <component :is="item.icon" class="size-4" />
-                    {{ item.label }}
-                </span>
+                    <component
+                        :is="item.icon"
+                        class="relative size-4 min-w-4"
+                    />
+                    <span class="inline">{{ item.label }}</span>
+                </component>
             </li>
-        </ul> -->
+        </ul>
     </div>
 </template>
