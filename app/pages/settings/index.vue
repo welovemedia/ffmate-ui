@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-useCurrentPage().setCurrent("Settings");
+useSetCurrentPage().setCurrent(PageTitles.Settings);
 
 const settingsStore = useSettingsStore();
 </script>

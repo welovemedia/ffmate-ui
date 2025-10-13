@@ -11,7 +11,7 @@ const presetStore = usePresetStore();
 const { perPage } = useConfig();
 const page = ref(0);
 
-useCurrentPage().setCurrent("Watchfolder");
+useSetCurrentPage().setCurrent(PageTitles.Watchfolders);
 
 watch(page, () => {
     watchfolderStore.load(page.value, perPage);

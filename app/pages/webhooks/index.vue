@@ -6,7 +6,7 @@ import {
 } from "@heroicons/vue/24/solid"
 import type { Webhook } from "~/sdk/ffmate/lib/interfaces/webhooks/webhook"
 
-useCurrentPage().setCurrent("Webhooks")
+useSetCurrentPage().setCurrent(PageTitles.Webhooks)
 
 const webhookStore = useWebhookStore()
 const { perPage } = useConfig()

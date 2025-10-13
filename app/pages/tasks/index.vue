@@ -9,7 +9,7 @@ import {
 } from "@heroicons/vue/24/solid";
 import type { Task } from "~/sdk/ffmate/lib/interfaces/tasks/task";
 
-useCurrentPage().setCurrent("Dashboard");
+useSetCurrentPage().setCurrent(PageTitles.Dashboard);
 
 const taskStore = useTaskStore();
 const { perPage } = useConfig();
@@ -60,6 +60,8 @@ const tasks = computed(() => {
                 inputFile: { raw: "" },
                 outputFile: { raw: "" },
                 createdAt: task.createdAt,
+                retries: 0,
+                retried: 0,
                 updatedAt: task.updatedAt,
                 remaining: -1,
                 lastRemaining: -1,

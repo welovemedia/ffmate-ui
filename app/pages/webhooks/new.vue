@@ -9,7 +9,9 @@ const route = useRoute();
 
 const editWebhook = ref<Webhook | null>(null);
 const editwebhookId = route.query["edit"] as string;
-useCurrentPage().setCurrent(editwebhookId ? "Edit webhook" : "New webhook");
+useSetCurrentPage().setCurrent(
+    editwebhookId ? PageTitles.EditWebhook : PageTitles.NewWebhook,
+);
 
 const form = reactive({
     event: editWebhook.value?.event ?? WebhookEvent.TASK_CREATED,

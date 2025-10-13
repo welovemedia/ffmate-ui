@@ -17,7 +17,9 @@ const route = useRoute();
 
 const editPreset = ref<Preset | null>(null);
 const editPresetId = route.query["edit"] as string;
-useCurrentPage().setCurrent(editPresetId ? "Edit preset" : "New preset");
+useSetCurrentPage().setCurrent(
+    editPresetId ? PageTitles.EditPreset : PageTitles.NewPreset,
+);
 const clientStore = await useClientStore();
 
 if (editPresetId) {
@@ -114,7 +116,7 @@ const save = () => {
             sidecarPath: form.postProcessing.sidecarPath,
         },
         webhooks: form.webhooks,
-        labels: form.labels.filter(l => l.length),
+        labels: form.labels.filter((l) => l.length),
         globalPresetName: form.globalPresetName,
     } as NewPreset;
 

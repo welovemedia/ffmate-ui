@@ -2,7 +2,7 @@
 import { HandThumbUpIcon, HandThumbDownIcon } from "@heroicons/vue/20/solid";
 import type { Client } from "~/sdk/ffmate/lib/interfaces/client/client";
 
-useCurrentPage().setCurrent("Clients");
+useSetCurrentPage().setCurrent(PageTitles.Clients);
 
 const clientStore = useClientStore();
 

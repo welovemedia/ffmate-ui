@@ -3,13 +3,13 @@ import { useCurrentPage } from "../../../app/composables/useCurrentPage";
 
 describe("useCurrentPage", () => {
   it("return current as undefined", async () => {
-    expect(useCurrentPage().current).to.be.undefined;
+    expect(useSetCurrentPage().current).to.be.undefined;
   });
   it("return setCurrent as defined", async () => {
-    expect(useCurrentPage().setCurrent).toBeDefined;
+    expect(useSetCurrentPage().setCurrent).toBeDefined;
   });
   it("return current as 'test'", async () => {
-    expect(useCurrentPage().setCurrent("test")).to.eq("test");
-    expect(useCurrentPage().current).to.eq("test");
+    expect(useSetCurrentPage().setCurrent("test")).to.eq("test");
+    expect(useSetCurrentPage().current).to.eq("test");
   });
 });

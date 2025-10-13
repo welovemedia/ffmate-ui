@@ -6,7 +6,7 @@ const webhookExecutionStore = useWebhookExecutionStore();
 const { perPage } = useConfig();
 const page = ref(0);
 
-useCurrentPage().setCurrent("Sent webhooks");
+useSetCurrentPage().setCurrent(PageTitles.SentWebhooks);
 
 watch(page, () => {
     webhookExecutionStore.load(page.value, perPage);

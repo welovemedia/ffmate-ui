@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { PlusIcon } from "@heroicons/vue/24/solid";
+import { BookOpenIcon, PlusIcon } from "@heroicons/vue/24/solid";
 
 const confirmStore = useConfirmStore();
 const logsStore = useLogStore();
@@ -69,11 +69,11 @@ const add = () => {
         >
             <PlusIcon class="size-5" aria-hidden="true" />
         </button>
-        <div class="container w-full mx-auto px-2">
-            <div v-if="useCurrentPage().current" class="w-full h-30 py-6">
-                <h1>{{ useCurrentPage().current }}</h1>
+        <div class="w-full mx-auto px-2">
+            <Breadcrumb />
+            <div class="container mx-auto">
+                <NuxtPage />
             </div>
-            <NuxtPage />
         </div>
     </div>
 </template>

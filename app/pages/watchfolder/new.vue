@@ -10,8 +10,8 @@ const route = useRoute();
 
 const editWatchfolder = ref<Watchfolder | null>(null);
 const editWatchfolderId = route.query["edit"] as string;
-useCurrentPage().setCurrent(
-    editWatchfolderId ? "Edit watchfolder" : "New watchfolder",
+useSetCurrentPage().setCurrent(
+    editWatchfolderId ? PageTitles.EditWatchfolder : PageTitles.NewWatchfolder,
 );
 if (editWatchfolderId) {
     await useFFMate()
@@ -45,7 +45,7 @@ const save = () => {
         preset: form.preset,
         path: form.path,
         suspended: form.suspended,
-        labels: form.labels.filter(l => l.length),
+        labels: form.labels.filter((l) => l.length),
         filter: {
             extensions: {
                 include: [],

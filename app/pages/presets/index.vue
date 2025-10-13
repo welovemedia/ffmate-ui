@@ -6,7 +6,7 @@ import {
 } from "@heroicons/vue/24/solid";
 import type { Preset } from "~/sdk/ffmate/lib/interfaces/presets/preset";
 
-useCurrentPage().setCurrent("Presets");
+useSetCurrentPage().setCurrent(PageTitles.Presets);
 
 const presetStore = usePresetStore();
 const { perPage } = useConfig();
