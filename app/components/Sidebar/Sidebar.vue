@@ -1,30 +1,27 @@
 <script lang="ts" setup>
 import {
     ArrowDownTrayIcon,
-    BookOpenIcon,
+    BookmarkIcon,
     CommandLineIcon,
     UserIcon,
 } from "@heroicons/vue/24/outline";
 import {
-    Bars3Icon,
     FireIcon,
     FolderIcon,
     InboxArrowDownIcon,
     PaperAirplaneIcon,
-    AdjustmentsVerticalIcon,
     PencilSquareIcon,
 } from "@heroicons/vue/24/solid";
 import type { RouteLocationNamedRaw } from "vue-router";
 import { useViewportStore } from "~/stores/viewportStore";
 
 const viewportStore = useViewportStore();
-
-const nuxtlink = resolveComponent("NuxtLink");
-
+const clientStore = useClientStore();
 const menu = [
     {
         label: "Dashboard",
         icon: FireIcon,
+        badge: "",
         to: {
             name: "tasks",
         } as RouteLocationNamedRaw,
@@ -77,19 +74,17 @@ const menuBottom = computed(() => [
     {
         label: "Updates",
         icon: ArrowDownTrayIcon,
-        active: viewportStore.updates.open,
-        fn: () => (viewportStore.updates.open = !viewportStore.updates.open),
+        badge: clientStore.isUpdateAvailable ? "1" : undefined,
+        to: {
+            name: "updates",
+        } as RouteLocationNamedRaw,
     },
     {
         label: "Logs",
         icon: CommandLineIcon,
-        active: viewportStore.logs.open,
-        fn: () => (viewportStore.logs.open = !viewportStore.logs.open),
-    },
-    {
-        label: "Documentation",
-        icon: BookOpenIcon,
-        to: "https://docs.ffmate.io",
+        to: {
+            name: "logs",
+        } as RouteLocationNamedRaw,
     },
 ]);
 </script>
@@ -99,7 +94,7 @@ const menuBottom = computed(() => [
     <div
         class="h-screen transition-normal duration-300"
         :class="{
-            'w-70 max-w-70 min-w-70': viewportStore.sidebar.expand,
+            'w-60 max-w-60 min-w-60': viewportStore.sidebar.expand,
             'w-15 max-w-15 min-w-15': !viewportStore.sidebar.expand,
         }"
     ></div>
@@ -107,7 +102,7 @@ const menuBottom = computed(() => [
     <div
         class="fixed flex flex-col justify-between h-screen top-0 left-0 backdrop-blur-3xl bg-white/10 border-r border-white/10 shadow-xl shadow-black/20 transition-normal duration-300"
         :class="{
-            'w-70': viewportStore.sidebar.expand,
+            'w-60': viewportStore.sidebar.expand,
             'w-15': !viewportStore.sidebar.expand,
         }"
     >
@@ -118,17 +113,22 @@ const menuBottom = computed(() => [
             <li v-for="item in menu" :key="item.label">
                 <NuxtLink
                     :to="item.to"
-                    class="size-8 flex-row justify-start cursor-pointer transition-color duration-200 px-2 overflow-hidden p-3 rounded-lg hover:bg-white/10 flex gap-x-2 items-center text-gray-300 hover:text-white whitespace-nowrap"
+                    class="size-8 flex-row cursor-pointer transition-color duration-200 px-2 overflow-hidden p-3 rounded-lg hover:bg-white/10 flex gap-x-2 items-center text-gray-300 hover:text-white whitespace-nowrap justify-between"
                     :class="{
                         'bg-white/10 text-white': useIsRouteActive(item.to),
                         'w-full': viewportStore.sidebar.expand,
                     }"
                 >
-                    <component
-                        :is="item.icon"
-                        class="relative size-4 min-w-4"
-                    />
-                    <span class="inline">{{ item.label }}</span>
+                    <div class="flex gap-x-2 items-center">
+                        <component
+                            :is="item.icon"
+                            class="relative size-4 min-w-4"
+                        />
+                        <span class="inline">{{ item.label }}</span>
+                    </div>
+                    <badge v-if="item.badge">
+                        {{ item.badge }}
+                    </badge>
                 </NuxtLink>
             </li>
         </ul>
@@ -137,25 +137,40 @@ const menuBottom = computed(() => [
             <li
                 v-for="item in menuBottom"
                 :key="item.label"
-                class="size-8 flex-row justify-start cursor-pointer transition-color duration-200 px-2 overflow-hidden p-3 rounded-lg hover:bg-white/10 flex gap-x-2 items-center text-gray-300 hover:text-white whitespace-nowrap"
-                :class="{
-                    'bg-white/10 text-white': item.active,
-                    'w-full': viewportStore.sidebar.expand,
-                }"
-                @click="item.fn ? item.fn() : null"
+                class="flex justify-between items-center"
             >
-                <component
-                    :is="item.to ? nuxtlink : 'div'"
-                    :to="item.to ? item.to : ''"
-                    target="_blank"
-                    class="flex gap-x-2 items-center"
+                <NuxtLink
+                    :to="item.to"
+                    class="size-8 flex-row cursor-pointer transition-color duration-200 px-2 overflow-hidden p-3 rounded-lg hover:bg-white/10 flex gap-x-2 items-center text-gray-300 hover:text-white whitespace-nowrap justify-between"
+                    :class="{
+                        'bg-white/10 text-white': useIsRouteActive(item.to),
+                        'w-full': viewportStore.sidebar.expand,
+                    }"
                 >
-                    <component
-                        :is="item.icon"
-                        class="relative size-4 min-w-4"
-                    />
-                    <span class="inline">{{ item.label }}</span>
-                </component>
+                    <div class="flex gap-x-2 items-center">
+                        <component
+                            :is="item.icon"
+                            class="relative size-4 min-w-4"
+                        />
+                        <span class="inline">{{ item.label }}</span>
+                    </div>
+                    <badge v-if="item.badge">
+                        {{ item.badge }}
+                    </badge>
+                </NuxtLink>
+            </li>
+            <li>
+                <NuxtLink
+                    to="https://docs.ffmate.io"
+                    target="_blank"
+                    class="size-8 flex-row justify-start cursor-pointer transition-color duration-200 px-2 overflow-hidden p-3 rounded-lg hover:bg-white/10 flex gap-x-2 items-center text-gray-300 hover:text-white whitespace-nowrap"
+                    :class="{
+                        'w-full': viewportStore.sidebar.expand,
+                    }"
+                >
+                    <BookmarkIcon class="relative size-4 min-w-4" />
+                    <span class="inline">Documentation</span>
+                </NuxtLink>
             </li>
         </ul>
     </div>

@@ -55,18 +55,6 @@ const add = () => {
             class="transition-all duration-300 ease-in-out"
         />
     </Transition>
-    <Transition
-        enter-from-class="translate-y-[500px] opacity-0"
-        enter-to-class="translate-y-0 opacity-100"
-        leave-from-class="translate-y-0 opacity-100"
-        leave-to-class="translate-y-[500px] opacity-0"
-    >
-        <ModalUpdates
-            v-if="viewportStore.updates.open"
-            class="transition-all duration-300 ease-in-out"
-            @close="viewportStore.updates.open = false"
-        />
-    </Transition>
     <div class="min-h-screen w-full flex items-start text-white">
         <Sidebar />
         <button

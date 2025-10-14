@@ -4,12 +4,10 @@ const originalStore = defineStore("viewport", {
   state: (): {
     sidebar: { expand: boolean };
     logs: { open: boolean };
-    updates: { open: boolean };
   } => {
     return {
       sidebar: { expand: true },
       logs: { open: false },
-      updates: { open: false },
     };
   },
   actions: {},

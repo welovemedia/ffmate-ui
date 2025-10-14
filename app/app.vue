@@ -7,6 +7,7 @@ const watchfolderStore = useWatchfolderStore();
 const webhookStore = useWebhookStore();
 const webhookExecutionStore = useWebhookExecutionStore();
 const settingsStore = useSettingsStore();
+useLogStore(); // init log gathering
 
 const { perPage } = useConfig();
 

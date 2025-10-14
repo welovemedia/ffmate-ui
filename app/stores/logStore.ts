@@ -19,9 +19,9 @@ export const useLogStore = (): ReturnType<typeof originalStore> => {
       onAdd: (data: WebsocketMessage) => {
         if (data.subject === "log:created") {
           if (store.value) {
-            store.value.logs.push(data.payload as string);
+            store.value.logs.unshift(data.payload as string);
             if (store.value.logs.length > 500) {
-              store.value.logs.shift();
+              store.value.logs.pop();
             }
           }
         }

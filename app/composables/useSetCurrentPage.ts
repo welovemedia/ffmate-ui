@@ -72,6 +72,16 @@ export const PageTitles = {
     description: "Modify general settings",
     documentation: "https://docs.ffmate.io/docs/ffmate-internals#client-endpoint",
   },
+  Updates: {
+    title: "Updates",
+    description: "Check for updates",
+    documentation: "https://docs.ffmate.io/docs/getting-started#updating-ffmate",
+  },
+  Logs: {
+    title: "Logs",
+    description: "Monitor logs in realtime",
+    documentation: "https://docs.ffmate.io/docs/web-ui#accessing-real-time-logs",
+  },
 } as { [key: string]: PageTitle };
 
 export const useSetCurrentPage = () => {
