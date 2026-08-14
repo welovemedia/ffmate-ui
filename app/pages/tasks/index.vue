@@ -59,6 +59,8 @@ const tasks = computed(() => {
                 source: "api",
                 inputFile: { raw: "" },
                 outputFile: { raw: "" },
+                retries:0,
+                retried: 0,
                 createdAt: task.createdAt,
                 updatedAt: task.updatedAt,
                 remaining: -1,
