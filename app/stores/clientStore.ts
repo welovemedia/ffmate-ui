@@ -20,6 +20,10 @@ const originalStore = defineStore("client", {
       return state.clients.find((c) => c.self) || undefined;
     },
     isUpdateAvailable: (state) => {
+      console.log(
+        state.clients.find((c) => c.self)?.version,
+        state.latestVersion,
+      );
       if (!state.latestVersion) return false;
       return (
         `v${state.clients.find((c) => c.self)?.version}` !== state.latestVersion
