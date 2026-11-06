@@ -6,12 +6,18 @@ export default defineNuxtConfig({
   modules: [
     "@pinia/nuxt",
     "@vueuse/nuxt",
-    "@nuxtjs/google-fonts",
     "@nuxt/test-utils/module",
   ],
 
   ssr: false,
-  css: ["~/assets/css/style.css"],
+  // Poppins is bundled from npm (not downloaded at build time) so offline
+  // builds like Homebrew's sandboxed install phase still ship the font.
+  css: [
+    ...[100, 200, 300, 400, 500, 600, 700, 800, 900].map(
+      (w) => `@fontsource/poppins/${w}.css`,
+    ),
+    "~/assets/css/style.css",
+  ],
 
   vite: {
     plugins: [tailwindcss()],
@@ -42,14 +48,6 @@ export default defineNuxtConfig({
       title: "ffmate",
       htmlAttrs: {
         class: "overflow-y-scroll",
-      },
-    },
-  },
-
-  googleFonts: {
-    families: {
-      Poppins: {
-        wght: [100, 200, 300, 400, 500, 600, 700, 800, 900],
       },
     },
   },
