@@ -21,7 +21,9 @@ const originalStore = defineStore("client", {
     },
     isUpdateAvailable: (state) => {
       if (!state.latestVersion) return false;
-      return state.clients.find((c) => c.self)?.version !== state.latestVersion;
+      return (
+        `v${state.clients.find((c) => c.self)?.version}` !== state.latestVersion
+      );
     },
     isFFmpegFound: (state) => {
       return (
