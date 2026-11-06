@@ -4,7 +4,7 @@ prepare:
 dev:
 	pnpm run dev
 
-build:
+build: prepare
 	pnpm run generate
 
 test+unit:
